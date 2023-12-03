@@ -1,1 +1,433 @@
 /* Add your CSS here */
+body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Style for the header 
+  for Title: Fake Stack OverFlow*/
+
+  #header {
+    background-color: #d2d2d2; /* Optional background color for the header */
+    color: rgb(0, 0, 0); /* Optional text color for the header */
+    width: 100%; /* Make the header span the entire width of the viewport */
+    padding: 10px; /* Optional padding for spacing */
+    display: flex; /* Use flexbox to control layout */
+    justify-content: space-between; /* Space between title and search bar */
+    align-items: center; /* Center vertically within the header */
+  }
+
+  /* Style for the title */
+  .title {
+    text-align: center; /* Center-align the title within the header */
+    flex-grow: 1; /* Allow the title to grow and take available space */
+    margin-right: auto;
+    font-size: 18pt;
+  }
+
+  /*style for the search bar*/
+  .search-bar {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    border: 1px solid #000;
+  }
+  
+  /* Style for the input for searchbar*/
+  input[type="text"] {
+    padding: 5px; /* Add some padding to the input field */
+    border: 1px solid #ccc; /* Add a border to the input field */
+    border-radius: 5px; /* Add rounded corners to the input field */
+  }
+
+
+
+
+.container {
+    display: flex; /* Use flexbox to create a two-column layout */
+}
+
+.sidebar {
+    height: 100vh;
+    /* Add a dotted border to the sidebar */
+    border-right: 2.5px dashed rgb(0, 0, 0); /* You can adjust the border width and color as needed */
+    width: 250px; /* Set the width of the sidebar */
+    background-color: rgb(255, 255, 255); /* Set the background color of the sidebar
+    color: #fff; /* Set text color */
+    padding: 20px; /* Add padding to the sidebar content */
+}
+
+.content {
+    flex-grow: 1; /* Allow the main content to fill the remaining space */
+    padding: 20px; /* Add padding to the main content */
+}
+
+.transparent-button {
+    background: transparent;
+    border: none;
+    color: rgb(0, 128, 255);
+    padding: 10px 20px;
+    width: 250px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    margin-bottom: 10px; /* Add margin to separate buttons vertically */
+    font-weight: bold;
+    font-size: medium;
+    
+}
+
+.transparent-button:hover {
+    background: rgb(162, 162, 162);
+}
+
+/* Styles for selected buttons */
+.transparent-button.selected {
+    background-color: rgb(162, 162, 162); /* Change to the desired gray color */
+  }
+
+.question-options {
+    display: flex; /* Use flexbox to place the elements side by side */
+    justify-content: space-between; /* Push elements to both ends */
+}
+
+.question-counter-sorting{
+    display: flex;
+    margin-top: 20px; /* Adjust the margin-top to lower the section */
+}
+
+.all-questions-sign{
+    font-weight: bolder;
+    font-size: xx-large;
+}
+.ask-questions-button {
+    margin-left: auto; /* Push the ask-question div to the right */
+    padding: 10px 20px; /* Adjust padding for button size */
+    background: rgb(51, 126, 255);
+    border: 1px solid black;
+    color: #fff; /* Set text color to white */
+    font-size: 16px; /* Increase font size for the button */
+    font-weight: bold;
+    cursor: pointer;
+    text-align: left;
+}
+#ask-questions-buttn {
+    margin-left: auto; /* Push the ask-question div to the right */
+    padding: 10px 20px; /* Adjust padding for button size */
+    background: rgb(51, 126, 255);
+    border: 1px solid black;
+    color: #fff; /* Set text color to white */
+    font-size: 16px; /* Increase font size for the button */
+    font-weight: bold;
+    cursor: pointer;
+    text-align: left;
+}
+
+/* Style for coloring "question.askedBy" in red */
+.red-question {
+    color: red;
+}
+
+.answer-question-btn{
+    margin-left: auto; /* Push the ask-question div to the right */
+    padding: 10px 20px; /* Adjust padding for button size */
+    background: rgb(51, 126, 255);
+    border: 1px solid black;
+    color: #fff; /* Set text color to white */
+    font-size: 16px; /* Increase font size for the button */
+    font-weight: bold;
+    cursor: pointer;
+    text-align: left;
+}
+
+.question-counter{
+    font-size: 20px;
+}
+.sorting-questions{
+    margin-left: auto; /* Push the ask-question div to the right */
+    
+}
+.sorting-questions button {
+    /* Add some padding to maintain button size and spacing */
+    border: 1px solid #000;
+    cursor: pointer;
+    padding: 5px 10px; /* Adjust padding for button size */
+    background-color: white;
+}
+.quesiton-heading {
+    border-bottom: 2.5px dashed rgb(0, 0, 0);
+    padding: 10px; 
+    
+}
+.content {
+    flex-grow: 1; 
+    padding: 20px; 
+}
+
+.question {
+    border-top: 2.5px dashed rgb(0, 0, 0);
+    border-bottom: 2.5px dashed rgb(0, 0, 0);
+    border-left: none;
+    border-right: none;
+    padding: 10px;
+    cursor: pointer;
+    margin: 0 -20px; /* Counteract the padding of .content */
+}
+
+
+
+.question a {
+    text-decoration: none;
+    color: inherit;
+    /* display: block; */
+}
+
+.question:hover {
+    background-color: #f6f6f6;
+}
+
+/* Remove space between adjacent question containers */
+.question + .question {
+    border-top: none;
+}
+
+.tag{
+    background-color: white; /* Background color for tags */
+    padding: 10px; /* Adjust padding as needed */
+    border: 1px dashed black; /* Border for tags */
+    text-align: center; /* Center the text inside tags */
+    box-sizing: border-box; /* Include padding and border in element size */
+    border-radius: 0px; /* Rounded corners for tags */
+    width: 100%; /* Ensure tags take the full width of their grid cell */
+}
+
+.tags{
+    max-width: 800px; /* Set the maximum width you desire */
+    max-height: 300px; /* Set the maximum height you desire */
+    margin: 50px auto 0; /* Center the container horizontally on the page */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
+    gap: 100px; /* Adjust the gap between items as needed */
+    justify-content: center; /* Center the grid horizontally */
+}
+.form-group {
+    margin-bottom: 1rem; /* Provides space between form groups */
+}
+
+.question-label {
+    display: block; /* Force labels to their own line */
+    margin-bottom: 0.5rem; /* Some space between label and input field */
+}
+
+.limit, 
+.add-details, 
+.add-keyw {
+    display: block; /* Make these hints appear on their own line */
+    font-size: 1; /* Make font slightly smaller than normal text */
+    color: black; /* Slight grey color for hints */
+    margin-bottom: 0.5rem; /* Space beneath each hint */
+}
+
+.input-text {
+    width: 100%; /* Makes the input fields occupy full width of the container */
+    padding: 0.5rem; /* Some padding for input fields */
+    margin-bottom: 0.5rem; /* Space beneath each input field */
+}
+
+/* ... Rest of the CSS ... */
+
+.footer-form-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.submit-container {
+    display: flex;
+    justify-content: space-between; /* This will ensure maximum space between the button and the note */
+    align-items: center; /* Vertically aligns the items in the middle */
+}
+
+.submit-button {
+    margin-left: auto; /* Push the ask-question div to the right */
+    padding: 10px 20px; /* Adjust padding for button size */
+    background: rgb(51, 126, 255);
+    border: 1px solid black;
+    color: #fff; /* Set text color to white */
+    font-size: 16px; /* Increase font size for the button */
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px 20px; /* Adds padding to make the button larger */
+    cursor: pointer; /* Changes the mouse cursor when hovering over the button */
+    border-radius: 5px; /* Optional: Adds rounded corners to the button */
+    flex-grow: 0; /* Ensures the button doesn't grow to occupy space */
+}
+
+.mandatory-field-note {
+    margin: 0; /* Removes the default margin of the paragraph */
+    flex-grow: 0; /* Ensures the note doesn't grow to occupy space */
+    text-align: right; /* Aligns the text to the right */
+    color: red
+}
+
+/* .tagsView{
+    display:inline-block;
+} */
+
+.tag-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .tag-counter-sorting {
+    flex: 1; /* Allow the counter to grow and take available space */
+    text-align: left; /* Align the counter to the left */
+  }
+  .tag-counter{
+    font-weight: bold;
+    font-size: 20pt;
+  }
+  .all-tags-sign {
+    flex: 7; /* Allow the sign to grow and take available space */
+    text-align: center; /* Center-align the sign */
+    font-weight: bold;
+    font-size: xx-large;
+  }
+  /* ... Existing CSS ... */
+
+.question-container {
+    display: grid; /* We'll use grid layout */
+    grid-template-columns: 1fr 3fr 1fr; /* Distribute space among Answer Count, Question Title and User Info */
+    grid-gap: 20px; /* Space between columns */
+    align-items: center; /* Vertically align the content */
+    padding: 15px 0; /* Padding top and bottom */
+}
+
+.question-stats {
+    display: grid;
+    grid-template-rows: 1fr 1fr; /* For Answer Count and View Count */
+    grid-gap: 5px; /* Space between rows */
+}
+
+.answer-count, .view-count {
+    font-weight: bold;
+}
+
+.question-content h2 {
+    color: blue;
+    margin: 0; /* Remove default margin */
+}
+
+
+.question-meta {
+    font-size: 0.9em; /* Slightly smaller font for the meta info */
+    color: #555; /* Dark grey for the meta info */
+    text-align: center;
+    
+}
+/* Question Display */
+.question-display {
+    display: flex;
+    align-items: center;
+    border-bottom: 2.5px dashed rgb(0, 0, 0);
+    padding: 15px 0;
+}
+
+.question-stats {
+    flex: 1;
+    text-align: center;
+}
+
+.question-content {
+    flex: 2;
+    text-align: center;
+}
+
+.question-title {
+    color: blue;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.question-text {
+    font-size: 16px;
+}
+
+.time-ago {
+    font-style: italic;
+    color:#000
+}
+
+
+
+/* Answers Display */
+.answers-container {
+    margin-top: 15px;
+}
+
+.answer {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px dashed black;
+}
+
+.answer-text {
+    flex: 3;
+    font-size: 16px;
+}
+
+.answer-meta {
+    flex: 1;
+    text-align: right;
+    font-size: 14px;
+    color: #666;
+}
+.form-group {
+    margin-bottom: 20px; /* Space between input groups */
+}
+
+label {
+    display: block; /* Ensures the label is on a new line */
+    margin-bottom: 10px; /* Space between label and input field */
+}
+
+.submit-container {
+    display: flex; /* Arranges child elements in a row */
+    justify-content: space-between; /* Maximizes space between child elements */
+    align-items: center; /* Vertical alignment of child elements */
+}
+
+.submit-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 10px 20px; /* Adjust as needed */
+    cursor: pointer;
+}
+
+.mandatory-field-note {
+    font-size: 12px; /* Adjust as needed */
+    color: red; /* Color can be adjusted as needed */
+}
+#answerText {
+    resize: none;
+}
+.ask-question-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    z-index: 1000; 
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
