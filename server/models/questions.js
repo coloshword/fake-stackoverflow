@@ -19,9 +19,10 @@ const questionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Answer'
     }],
-    asked_by: {
-        type: String,
-        required: true,
+    ans_by: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User'
+        
     },
     ask_date_time: {
         type: Date,

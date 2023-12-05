@@ -7,13 +7,24 @@ const answerSchema = new mongoose.Schema({
         required: true,
     },
     ans_by: {
-        type: String,
-        required: true,
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User'
+        
     },
     ans_date_time: {
         type: Date,
         default: Date.now,
-    }
+    },
+
+    ans_vote: {
+        type: Number,
+        default: 0
+    },
+    
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }],
 });
 
 answerSchema.virtual('url').get(function() {
