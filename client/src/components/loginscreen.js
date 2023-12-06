@@ -29,8 +29,9 @@ const LoginScreen = ({ onLoginSuccess, onCreateAccount }) => {
                 // Handle errors
             }
 
+            console.log('Logged in as ' + data.username);
             console.log("LOGIN SUCCESS");
-            onLoginSuccess();
+            onLoginSuccess(data.username);
         } catch (error) {
             console.error('Login error', error);
         }

@@ -15,12 +15,12 @@ const HomeScreen = ({onLoggedIn}) => {
         setShowLogin(true);
         setShowCreateAccount(false);
     };
-    const handleSuccessfulLogin = () => {
-        onLoggedIn(); // Call the passed function when login is successful
+    const handleSuccessfulLogin = (username) => {
+        onLoggedIn(username); // Call the passed function when login is successful
     };
 
-    const handleAccountCreationAndLogin = () => {
-        onLoggedIn(); // Transition to main view after account creation and login
+    const handleAccountCreationAndLogin = (username) => {
+        onLoggedIn(username); // Transition to main view after account creation and login
     };
 
     if (showCreateAccount) {

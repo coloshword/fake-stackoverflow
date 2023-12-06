@@ -13,9 +13,11 @@ const FakeStackOverflow = () => {
     const [showQuestionsForTag, setShowQuestionsForTag] = useState(false);
     const [selectedTag, setSelectedTag] = useState(null);
     const [showHomeScreen, setShowHomeScreen] = useState(true);
+    const [loggedInUser, setLoggedInUser] = useState(''); 
 
-    const handleLoggedIn = () => {
+    const handleLoggedIn = (username) => {
         hideHomeScreen(); // This method already exists in your component
+        setLoggedInUser(username);
     };
 
     const hideHomeScreen = () => {
@@ -83,6 +85,7 @@ const FakeStackOverflow = () => {
                         setModelData={setModelData} 
                         handleTabChange={handleTabChange}
                     />
+                    <span> Logged in as {loggedInUser}</span>
                     <Content 
                         selectedTab={selectedTab}
                         setSelectedTab={setSelectedTab}
