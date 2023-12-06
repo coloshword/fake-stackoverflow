@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const bcrypt = require('bcrypt'); // Import bcrypt for password validation
 
 const Question = require('./models/questions');
 const Tag = require('./models/tags');
 const Answer = require('./models/answers');
+const User = require('./models/users');
 
 
 const app = express();
@@ -159,6 +161,70 @@ app.patch('/api/questions/:questionId', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Error updating the question');
+    }
+});
+
+app.post('/api/users/login', async (req, res) => {
+    try {
+        // Find user by username
+        const user = await User.findOne({ username: req.body.username });
+        if (!user) {
+            return res.status(401).send('Invalid credentials');
+        }
+
+        // Validate password
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        if (!validPassword) {
+            return res.status(401).send('Invalid credentials');
+        }
+
+        res.json({ username: user.username });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post('/api/users/register', async (req, res) => {
+    try {
+        // Check if username already exists
+        const existingUserByUsername = await User.findOne({ username: req.body.username });
+        if (existingUserByUsername) {
+            return res.status(400).send('Username already exists');
+        }
+
+        // Check if email already exists
+        const existingUserByEmail = await User.findOne({ email: req.body.email });
+        if (existingUserByEmail) {
+            return res.status(400).send('Email already in use');
+        }
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const ans_date_time = new Date();
+
+        // Create new user
+        const newUser = new User({
+            username: req.body.username,
+            password: hashedPassword,
+            email: req.body.email,
+            // Set default or initial values for other fields
+            reputation: 90, // Assuming a default reputation value
+            questions: [],
+            tags: [],
+            answers: [],
+            user_date_time: ans_date_time
+            // Add any other fields as necessary
+        });
+
+        // Save new user
+        await newUser.save();
+
+        // Response after successful account creation
+        res.status(201).json({ message: 'Account created successfully', username: newUser.username });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
     }
 });
 

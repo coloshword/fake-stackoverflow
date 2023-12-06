@@ -3,6 +3,7 @@ import Header from './header';
 import Sidebar from './sidebar';
 import Content from './content';
 import Model from '../models/model.js';
+import HomeScreen from './homescreen';
 
 const FakeStackOverflow = () => {
     const [selectedTab, setSelectedTab] = useState('questions');
@@ -11,6 +12,15 @@ const FakeStackOverflow = () => {
     const [showAskQuestionForm, setShowAskQuestionForm] = useState(false);
     const [showQuestionsForTag, setShowQuestionsForTag] = useState(false);
     const [selectedTag, setSelectedTag] = useState(null);
+    const [showHomeScreen, setShowHomeScreen] = useState(true);
+
+    const handleLoggedIn = () => {
+        hideHomeScreen(); // This method already exists in your component
+    };
+
+    const hideHomeScreen = () => {
+        setShowHomeScreen(false);
+    };
 
     const handleTabChange = (newTab) => {
         setSelectedTab(newTab);
@@ -55,6 +65,10 @@ const FakeStackOverflow = () => {
     const onHideAskQuestionForm = () => {
         setShowAskQuestionForm(false);
     };
+
+    if (showHomeScreen) {
+        return <HomeScreen onLoggedIn={handleLoggedIn} />;
+    }
 
     return (
         <div>
