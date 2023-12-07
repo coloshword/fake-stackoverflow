@@ -103,25 +103,29 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
     }
     return (
         <div className="content">
-            <div className="question-display">
-                <div className="question-stats">
-                    <p><span className="answer-count">{updatedQuestion.answers.length}</span> Answers</p>
-                    <p><span className="view-count">{updatedQuestion.views}</span> Views</p>
+            <div className="card"> 
+                <div className="card-body bordered"> 
+                <div className="question-display">
+                    <div className="question-stats">
+                        <p><span className="answer-count">{updatedQuestion.answers.length}</span> Answers</p>
+                        <p><span className="view-count">{updatedQuestion.views}</span> Views</p>
+                    </div>
+                    <div className="question-content">
+                        <h2 className="question-title">{updatedQuestion.title}</h2>
+                        <p className="question-text">{updatedQuestion.text}</p>
+                    </div>
+                    <div className="question-meta">
+                        <button className="ask-questions-button" onClick={onBack}>Back to Questions</button>
+                        <p className="red-question">{updatedQuestion.asked_by} asked <span className="time-ago">{timeAgo(updatedQuestion.ask_date_time)}</span></p>
+                    </div>
                 </div>
-                <div className="question-content">
-                    <h2 className="question-title">{updatedQuestion.title}</h2>
-                    <p className="question-text">{updatedQuestion.text}</p>
-                </div>
-                <div className="question-meta">
-                    <button className="ask-questions-button" onClick={onBack}>Back to Questions</button>
-                    <p className="red-question">{updatedQuestion.asked_by} asked <span className="time-ago">{timeAgo(updatedQuestion.ask_date_time)}</span></p>
-                </div>
-            </div>
 
             {/* Question Comments section */}
             <Comments
                 isQuestion={true}
                 question = {question} />
+                </div>
+            </div>
             {/* Assuming answers are part of the question object */}
             <div className="answers-container">
             {updatedQuestion.answers.map(aid => {
@@ -133,20 +137,24 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
                 }
 
                 return (
-                    <div className="answer-comment-wrapper">
-                        <div className="answer" key={aid}>
-                            <p className="answer-text">{answer.text}</p>
-                            <p className="answer-meta" style={{ color: 'green' }}>
-                                {answer.ans_by} answered <span className="time-ago">{timeAgo(answer.ans_date_time)}</span>
-                            </p>
+                    <div class="card">
+                        <div class="card-body bordered">
+                            <div className="answer-comment-wrapper">
+                                <div className="answer" key={aid}>
+                                    <p className="answer-text">{answer.text}</p>
+                                    <p className="answer-meta" style={{ color: 'green' }}>
+                                        {answer.ans_by} answered <span className="time-ago">{timeAgo(answer.ans_date_time)}</span>
+                                    </p>
+                                </div>
+                                <Comments isQuestion={false} question={answer} />
+                            </div>
                         </div>
-                        <Comments isQuestion={false} question={answer} />
                     </div>
                 );
             })}
             </div>
             {/* "Answer Question" button */}
-            <div className="answer-question">
+            <div className="answer-question basic-margin">
                 <button className="ask-questions-button" onClick={() => setShowAnswerForm(true)}>Answer Question</button>
             </div>
         </div>

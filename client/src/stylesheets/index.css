@@ -392,6 +392,15 @@ input[type="text"] {
   border-top: solid 1px #d8dbdd;
 }
 
+.comments-inner {
+  width: 80%;
+  margin: auto
+}
+
+.comment {
+  padding: 1rem;
+  border-bottom:solid 1px #d8dbdd;
+}
 .new-comment {
   border:none !important;
   width: 100%;
@@ -410,7 +419,6 @@ input[type="text"] {
 .answer-comment-wrapper {
   display: flex;
   flex-direction: column;
-  border-bottom: 2px dashed black;
 }
 /* Answers Display */
 .answers-container {
@@ -498,4 +506,58 @@ label {
   cursor: pointer;
   padding: 0;
   font: inherit;
+}
+
+
+/* card from boostrap */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  
+}
+
+.card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1rem;
+}
+
+.card-title {
+  margin-bottom: .75rem;
+}
+
+.card-text:last-child {
+  margin-bottom: 0;
+}
+
+.card-header {
+  padding: .75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: rgba(0,0,0,.03);
+}
+
+.bordered {
+  border: 1.5px solid #334456;
+  border-radius: 10px;
+  box-shadow: #334456 2px 2px 0;
+  background: #ffffff;
+  transition: 0.3s ease;
+}
+
+
+.card-footer {
+  padding: .75rem 1.25rem;
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid rgba(0,0,0,.125);
+}
+
+
+.basic-margin {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }

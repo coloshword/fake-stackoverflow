@@ -314,7 +314,7 @@ app.post('/api/add_comment', async (req, res) => {
             // Find the question by its ID
             questionOrAnswerObj = await Question.findOne({ _id: question });
         } else {
-            // find answer 
+            // find answer by its ID
             questionOrAnswerObj = await Answer.findOne({ _id: question })
         }
 

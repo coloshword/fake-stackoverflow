@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 
+//IMPORTANT: question, can be a question , or an answer (since both question and answer have comments)
 const Comments = ({ isQuestion, question }) => {
     const [newComment, setNewComment] = useState("");
     const [fullComments, setFullComments] = useState([]);
@@ -19,6 +20,7 @@ const Comments = ({ isQuestion, question }) => {
                         )
                     );
                     const newComments = commentsResponses.map(response => response.data);
+                    newComments.reverse();
                     setFullComments(newComments);
                 }
             } catch (error) {
@@ -67,21 +69,25 @@ const Comments = ({ isQuestion, question }) => {
 
     return (
         <div className="question-comments">
-            <div className="comment-display">
-                {fullComments.map((comment, index) => (
-                    <span key={index}>{comment.text}</span> 
-                ))}
-            </div>
-            <div className="new-commentField">
-                <input type="text"
-                       className="new-comment"
-                       placeholder="Add a comment"
-                       onChange={newCommentChange}
-                       value={newComment}
-                       onKeyDown={newCommentEnter} />
+            <div className="comments-inner">
+                <div className="comment-display">
+                    {fullComments.map((comment, index) => (
+                        <div className="comment">
+                            <span key={index}>{comment.text}</span> 
+                        </div>
+                    ))}
+                </div>
+                <div className="new-commentField">
+                    <input type="text"
+                            className="new-comment"
+                            placeholder="Add a comment"
+                            onChange={newCommentChange}
+                            value={newComment}
+                            onKeyDown={newCommentEnter} />
+                </div>
             </div>
         </div>
-     );
+    );
     
     }
 
