@@ -44,10 +44,16 @@ const HomeScreen = ({onLoggedIn}) => {
                 Login
             </button>
             <button 
-                style={{ padding: '10px 20px', fontSize: '16px' }}
+                style={{ marginRight: '10px', padding: '10px 20px', fontSize: '16px' }}
                 onClick={handleCreateAccountClick}
             >
                 Create Account
+            </button>
+            <button 
+                style={{ padding: '10px 20px', fontSize: '16px' }}
+                onClick={handleCreateAccountClick}
+            >
+                Browse as Guest
             </button>
         </div>
     );

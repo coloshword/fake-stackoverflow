@@ -20,10 +20,8 @@ function AskQuestionForm({ onSubmit, refreshQuestions }) {
         };
 
         try {
-            // Make a POST request to your backend API
             const response = await axios.post('http://localhost:8000/api/questions', questionData);
             console.log(response.data);
-            // Reset form fields after successful submission
             setTitle("");
             setDetails("");
             setTags("");
@@ -33,7 +31,6 @@ function AskQuestionForm({ onSubmit, refreshQuestions }) {
             onSubmit();
         } catch (error) {
             console.error('Error posting question: ', error);
-            // You might want to handle errors more gracefully in a production app
         }
     };
 

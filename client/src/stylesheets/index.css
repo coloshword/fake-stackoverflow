@@ -359,7 +359,6 @@ input[type="text"] {
 .question-display {
   display: flex;
   align-items: center;
-  border-bottom: 2.5px dashed rgb(0, 0, 0);
   padding: 15px 0;
 }
 
@@ -388,6 +387,20 @@ input[type="text"] {
   color:#000
 }
 
+/* comments */
+.question-comments {
+  border-top: solid 1px #d8dbdd;
+}
+
+.new-comment {
+  border:none !important;
+  width: 100%;
+  outline: none !important;
+}
+
+.new-comment:focus {
+  outline: none !important;
+}
 
 
 /* Answers Display */

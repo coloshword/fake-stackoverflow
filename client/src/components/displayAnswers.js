@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AnswerForm from './answerform';
+import Comments from './comments';
 import axios from 'axios';
 
 const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
@@ -118,6 +119,8 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
                 </div>
             </div>
 
+            {/* Question Comments section */}
+            <Comments />
             {/* Assuming answers are part of the question object */}
             <div className="answers-container">
             {updatedQuestion.answers.map(aid => {

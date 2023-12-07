@@ -85,7 +85,6 @@ const FakeStackOverflow = () => {
                         setModelData={setModelData} 
                         handleTabChange={handleTabChange}
                     />
-                    <span> Logged in as {loggedInUser}</span>
                     <Content 
                         selectedTab={selectedTab}
                         setSelectedTab={setSelectedTab}
