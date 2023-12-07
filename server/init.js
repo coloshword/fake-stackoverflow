@@ -135,7 +135,7 @@ const populate = async () => {
   let u1 = await userCreate('sampleUser', 'samplePassword', 'sampleuser@example.com', 100, [], [], [], false);
 
   // Now create answers and questions with the user reference
-  let a1 = await answerCreate('React Router is mostly a wrapper...', u1, false, 5, [c1]);
+  let a1 = await answerCreate('React Router is mostly a wrapper...', u1, false, 5, []);
   // ... other answers ...
 
   let q1 = await questionCreate('Programmatically navigate using React router', 'the alert shows the proper index...', [t1, t2], [a1], u1, false, false);
