@@ -48,7 +48,6 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
     const handleAnswerPosted = async (updatedQuestion) => {
         // This function will be triggered after an answer is posted
         setShowAnswerForm(false); // Hide the answer form
-        console.log(updatedQuestion);
 
         setQuestion(updatedQuestion);
 
@@ -120,7 +119,8 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
             </div>
 
             {/* Question Comments section */}
-            <Comments />
+            <Comments
+                question = {question} />
             {/* Assuming answers are part of the question object */}
             <div className="answers-container">
             {updatedQuestion.answers.map(aid => {
