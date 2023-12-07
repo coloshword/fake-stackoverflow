@@ -402,7 +402,16 @@ input[type="text"] {
   outline: none !important;
 }
 
+.comment-display {
+  display:flex;
+  flex-direction: column;
+}
 
+.answer-comment-wrapper {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px dashed black;
+}
 /* Answers Display */
 .answers-container {
   margin-top: 15px;
@@ -411,7 +420,6 @@ input[type="text"] {
 .answer {
   display: flex;
   align-items: center;
-  border-bottom: 2px dashed black;
 }
 
 .answer-text {

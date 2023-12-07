@@ -111,6 +111,22 @@ app.post('/api/answers', async (req, res) => {
     }
 });
 
+/* get answer given answer id */
+app.get('/api/answer/:answerId', async (req, res) => {
+    try {
+        const answerId = req.params.answerId;
+        const answer = await Answer.findById(answerId);
+        if (answer) {
+            res.status(200).json(answer);
+        } else {
+            res.status(404).send('Answer with id not found');
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error fetching the answer');
+    }
+});
+
 app.post('/api/questions', async (req, res) =>{
     try{
         const { title, details, tags, askedBy } = req.body; // Include 'tags' in destructuring
@@ -134,7 +150,7 @@ app.post('/api/questions', async (req, res) =>{
         const newQuestion = new Question({
             title: title,
             text: details,
-            tags: newTagIds, // Use 'newTagIds' instead of 'newTagIds'
+            tags: newTagIds, 
             asked_by: askedBy,
             ask_date_time: new Date(),
             answers: [],
@@ -281,10 +297,10 @@ app.post('/api/users/register', async (req, res) => {
     }
 });
 
-app.post('/api/comment', async (req, res) => {
+app.post('/api/add_comment', async (req, res) => {
     try {
         console.log(req.body);
-        const { question, newComment } = req.body;
+        const { isQuestion, question, newComment } = req.body;
         const comment = new Comment({
             text: newComment,
             comment_by: "username", 
@@ -293,13 +309,18 @@ app.post('/api/comment', async (req, res) => {
         });
         await comment.save();
 
-        // Find the question by its ID
-        const questionObj = await Question.findOne({ _id: question });
+        let questionOrAnswerObj;
+        if(isQuestion) {
+            // Find the question by its ID
+            questionOrAnswerObj = await Question.findOne({ _id: question });
+        } else {
+            // find answer 
+            questionOrAnswerObj = await Answer.findOne({ _id: question })
+        }
 
-        if (questionObj) {
-            console.log(questionObj);
-            questionObj.comments.push(comment._id);
-            await questionObj.save();
+        if (questionOrAnswerObj) {
+            questionOrAnswerObj.comments.push(comment._id);
+            await questionOrAnswerObj.save();
             res.status(201).json({ message: comment });
         } else {
             res.status(404).send('Question not found');
