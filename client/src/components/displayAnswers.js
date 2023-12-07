@@ -128,16 +128,18 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
 
                 if (!answer) {
                     console.log(`Answer not found for id: ${aid}`);
-                    // You can return null or a loading placeholder here
                     return null;
                 }
 
                 return (
-                    <div className="answer" key={aid}>
-                        <p className="answer-text">{answer.text}</p>
-                        <p className="answer-meta" style={{ color: 'green' }}>
-                            {answer.ans_by} answered <span className="time-ago">{timeAgo(answer.ans_date_time)}</span>
-                        </p>
+                    <div className="answer-comment-wrapper">
+                        <div className="answer" key={aid}>
+                            <p className="answer-text">{answer.text}</p>
+                            <p className="answer-meta" style={{ color: 'green' }}>
+                                {answer.ans_by} answered <span className="time-ago">{timeAgo(answer.ans_date_time)}</span>
+                            </p>
+                        </div>
+                        <Comments question={answer} />
                     </div>
                 );
             })}
