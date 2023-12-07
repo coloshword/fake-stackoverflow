@@ -7,6 +7,7 @@ const Question = require('./models/questions');
 const Tag = require('./models/tags');
 const Answer = require('./models/answers');
 const User = require('./models/users');
+const Comment = require('./models/comments');
 
 
 const app = express();
@@ -164,6 +165,23 @@ app.patch('/api/questions/:questionId', async (req, res) => {
     }
 });
 
+/* get question given question id */
+app.get('/api/question/:questionId', async (req, res) => {
+    try {
+        const questionId = req.params.questionId;
+        const question = await Question.findById(questionId);
+        if (question) {
+            res.status(200).json(question);
+        } else {
+            res.status(404).send('Question with id not found');
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error fetching the question');
+    }
+});
+
+
 app.post('/api/users/login', async (req, res) => {
     try {
         // Find user by username
@@ -228,7 +246,54 @@ app.post('/api/users/register', async (req, res) => {
     }
 });
 
-// Add more routes for other operations and models...
+app.post('/api/comment', async (req, res) => {
+    try {
+        console.log(req.body);
+        const { question, newComment } = req.body;
+        const comment = new Comment({
+            text: newComment,
+            comment_by: "username", 
+            com_date_time: new Date(),
+            com_vote: 0
+        });
+        await comment.save();
+
+        // Find the question by its ID
+        const questionObj = await Question.findOne({ _id: question });
+
+        if (questionObj) {
+            console.log(questionObj);
+            questionObj.comments.push(comment._id);
+            await questionObj.save();
+            res.status(201).json({ message: comment });
+        } else {
+            res.status(404).send('Question not found');
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error submitting the comment');
+    }
+});
+
+/* get comment given comment id */
+app.get('/api/comment/:commentId', async (req, res) => {
+    try {
+        const commentId = req.params.commentId;
+        const comment = await Comment.findById(commentId);
+
+        if (comment) {
+            res.status(200).json(comment);
+        } else {
+            res.status(404).send('Comment not found');
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error fetching the comment');
+    }
+});
+
+
+
 
 // Start the server
 app.listen(PORT, () => {
