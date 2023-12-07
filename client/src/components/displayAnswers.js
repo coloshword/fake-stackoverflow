@@ -120,6 +120,7 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
 
             {/* Question Comments section */}
             <Comments
+                isQuestion={true}
                 question = {question} />
             {/* Assuming answers are part of the question object */}
             <div className="answers-container">
@@ -139,7 +140,7 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
                                 {answer.ans_by} answered <span className="time-ago">{timeAgo(answer.ans_date_time)}</span>
                             </p>
                         </div>
-                        <Comments question={answer} />
+                        <Comments isQuestion={false} question={answer} />
                     </div>
                 );
             })}

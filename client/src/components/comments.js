@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 
-const Comments = ({ question }) => {
+const Comments = ({ isQuestion, question }) => {
     const [newComment, setNewComment] = useState("");
     const [fullComments, setFullComments] = useState([]);
     const [refreshComments, setRefreshComments] = useState(false); 
@@ -13,7 +13,6 @@ const Comments = ({ question }) => {
             try {
                 const commentIds = currentQuestion.comments;
                 if (commentIds && commentIds.length > 0) {
-                    console.log(commentIds);
                     const commentsResponses = await Promise.all(
                         commentIds.map(commentId =>
                             axios.get(`http://localhost:8000/api/comment/${commentId}`)
@@ -32,7 +31,14 @@ const Comments = ({ question }) => {
     
     const updateQuestion = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/question/${question._id}`);
+            let response;
+            if(isQuestion){
+                console.log("querying question");
+                response = await axios.get(`http://localhost:8000/api/question/${question._id}`);
+            }else {
+                console.log("here is the question " + question);
+                response = await axios.get(`http://localhost:8000/api/answer/${question._id}`);
+            }
             setCurrentQuestion(response.data);
             setRefreshComments((prevRefreshComments) => !prevRefreshComments);
         }
@@ -42,15 +48,14 @@ const Comments = ({ question }) => {
     };
 
     const newCommentChange = (e) => {
-        console.log(question); //question.id
         setNewComment(e.target.value);
     }
 
     const newCommentEnter = async (e) => {
         if (e.key === "Enter" && newComment !== "") {
-            const commentObj = { question: question._id, newComment }; 
+            const commentObj = { isQuestion: isQuestion,question: question._id, newComment }; 
             try {
-                const response = await axios.post('http://localhost:8000/api/comment', commentObj);
+                const response = await axios.post('http://localhost:8000/api/add_comment', commentObj);
                 console.log(response.data);
                 setNewComment("");
                 updateQuestion();
