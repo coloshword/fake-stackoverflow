@@ -10,6 +10,7 @@ const Comments = ({question}) => {
     }
 
     const newCommentEnter = async(e) => {
+        console.log(question);
         if(e.key == "Enter" && newComment != "") {
             const commentObj = {question, newComment}; // what question the comment belongs to
             try {
@@ -23,7 +24,8 @@ const Comments = ({question}) => {
     }
     return (
         <div className="question-comments">
-            <div className="comment-display"></div>
+            <div className="comment-display">
+            </div>
             <div className="new-commentField">
                 <input type="text" 
                 className="new-comment" 
