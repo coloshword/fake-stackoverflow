@@ -11,7 +11,7 @@ const Comments = ({ question }) => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const commentIds = question.comments;
+                const commentIds = currentQuestion.comments;
                 if (commentIds && commentIds.length > 0) {
                     console.log(commentIds);
                     const commentsResponses = await Promise.all(
