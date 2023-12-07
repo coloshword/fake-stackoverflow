@@ -27,10 +27,39 @@ app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
 
+async function fetchUserById(userId) {
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            console.log('User not found');
+            return null; // Or handle this case as needed
+        }
+        return user;
+    } catch (err) {
+        console.error('Error fetching user:', err);
+        throw err; // Rethrow the error if you want to handle it in the calling function
+    }
+}
+
 // Example route for fetching questions
 app.get('/api/questions', async (req, res) => {
     try {
-        const questions = await Question.find({});
+        let questions = await Question.find({});
+
+        // Convert Mongoose documents to plain objects to safely modify them
+        questions = questions.map(doc => doc.toObject());
+
+        for (let i = 0; i < questions.length; i++) {
+            const user = await fetchUserById(questions[i].ques_by);
+            if (user) {
+                // Replace 'ques_by' with the username of the user
+                questions[i].ques_by = user.username;
+            } else {
+                // Handle the case where the user is not found
+                questions[i].ques_by = 'Unknown';
+            }
+        }
+        console.log(questions);
         res.json(questions);
     } catch (err) {
         console.error(err);
@@ -186,6 +215,7 @@ app.post('/api/users/login', async (req, res) => {
     try {
         // Find user by username
         const user = await User.findOne({ username: req.body.username });
+        console.log(user);
         if (!user) {
             return res.status(401).send('Invalid credentials');
         }
@@ -196,12 +226,17 @@ app.post('/api/users/login', async (req, res) => {
             return res.status(401).send('Invalid credentials');
         }
 
-        res.json({ username: user.username });
+        // Create a new object without the password field
+        const userObj = user.toObject();
+        delete userObj.password;
+
+        res.json({ user: userObj });
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 app.post('/api/users/register', async (req, res) => {
     try {

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import LoginScreen from './loginscreen'; // Import LoginComponent
 import CreateAccount from './createaccount';
+import { useAuth } from './AuthContext';
 
-const HomeScreen = ({onLoggedIn}) => {
+const HomeScreen = ({onBrowseAsGuest}) => {
     const [showLogin, setShowLogin] = useState(false);
     const [showCreateAccount, setShowCreateAccount] = useState(false);
+    const { logIn } = useAuth();
+    
 
     const handleCreateAccountClick = () => {
         setShowLogin(false);
@@ -16,11 +19,11 @@ const HomeScreen = ({onLoggedIn}) => {
         setShowCreateAccount(false);
     };
     const handleSuccessfulLogin = (username) => {
-        onLoggedIn(username); // Call the passed function when login is successful
+        logIn(username); // Update the global auth state
     };
 
     const handleAccountCreationAndLogin = (username) => {
-        onLoggedIn(username); // Transition to main view after account creation and login
+        logIn(username); // Transition to main view after account creation and login
     };
 
     if (showCreateAccount) {
@@ -51,7 +54,7 @@ const HomeScreen = ({onLoggedIn}) => {
             </button>
             <button 
                 style={{ padding: '10px 20px', fontSize: '16px' }}
-                onClick={handleCreateAccountClick}
+                onClick={onBrowseAsGuest}
             >
                 Browse as Guest
             </button>

@@ -19,7 +19,7 @@ const questionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Answer'
     }],
-    ans_by: {
+    ques_by: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User'
         

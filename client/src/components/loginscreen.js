@@ -22,16 +22,15 @@ const LoginScreen = ({ onLoginSuccess, onCreateAccount }) => {
                 body: JSON.stringify({ username, password })
             });
             const data = await response.json();
-            if (data.token) {
-                localStorage.setItem('token', data.token);
-                // Update UI or redirect user
-            } else {
-                // Handle errors
+            if (data.user) {
+                // Assuming you want to store the entire user object in local storage
+                // Be cautious about storing sensitive data in local storage
+                localStorage.setItem('user', JSON.stringify(data.user));
+    
+                console.log('Logged in as ' + data.user.questions);
+                console.log("LOGIN SUCCESS");
+                onLoginSuccess(data.user.questions);
             }
-
-            console.log('Logged in as ' + data.username);
-            console.log("LOGIN SUCCESS");
-            onLoginSuccess(data.username);
         } catch (error) {
             console.error('Login error', error);
         }

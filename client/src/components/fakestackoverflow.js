@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useAuth } from './AuthContext';
 import Header from './header';
 import Sidebar from './sidebar';
 import Content from './content';
 import Model from '../models/model.js';
 import HomeScreen from './homescreen';
+
 
 const FakeStackOverflow = () => {
     const [selectedTab, setSelectedTab] = useState('questions');
@@ -14,6 +16,7 @@ const FakeStackOverflow = () => {
     const [selectedTag, setSelectedTag] = useState(null);
     const [showHomeScreen, setShowHomeScreen] = useState(true);
     const [loggedInUser, setLoggedInUser] = useState(''); 
+    const { isLoggedIn } = useAuth();
 
     const handleLoggedIn = (username) => {
         hideHomeScreen(); // This method already exists in your component
@@ -68,8 +71,12 @@ const FakeStackOverflow = () => {
         setShowAskQuestionForm(false);
     };
 
-    if (showHomeScreen) {
-        return <HomeScreen onLoggedIn={handleLoggedIn} />;
+    const handleBrowseAsGuest = () => {
+        setShowHomeScreen(false); // Hide the home screen and show the main content
+    };
+
+    if (!isLoggedIn && showHomeScreen) {
+        return <HomeScreen onLoggedIn={handleLoggedIn} onBrowseAsGuest={handleBrowseAsGuest}/>;
     }
 
     return (

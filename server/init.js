@@ -108,8 +108,9 @@ function questionCreate(title, text, tags, answers, asked_by, ask_date_time, vie
     title: title,
     text: text,
     tags: tags,
-    asked_by: asked_by
+    ques_by: asked_by
   }
+  console.log(qstndetail);
   if (answers != false) qstndetail.answers = answers;
   if (ask_date_time != false) qstndetail.ask_date_time = ask_date_time;
   if (views != false) qstndetail.views = views;

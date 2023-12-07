@@ -3,6 +3,7 @@ import DisplayAllQuestions from './questions';
 import DisplayAllTags from './tags';
 import AskQuestionForm from './AskQuestionForm';
 
+
 const Content = ({
     selectedTab,
     showQuestionsForTag,
@@ -14,8 +15,6 @@ const Content = ({
     searchText
 }) => {
     
-
-
     useEffect(() => {
         console.log("Selected Tag: ", selectedTag);
     }, [selectedTag]);

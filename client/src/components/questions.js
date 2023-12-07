@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AskQuestionForm from './AskQuestionForm';
 import DisplayAnswers from './displayAnswers';
+import { useAuth } from './AuthContext';
 import axios from 'axios';
 
 
@@ -13,6 +14,7 @@ function DisplayAllQuestions({ selectedTag, setSelectedQuestionId, searchText })
     const [sortType, setSortType] = useState('Newest');
     const [selectedQuestion, setSelectedQuestion] = useState(null);
     const [filteredQuestions, setFilteredQuestions] = useState([]);
+    const { isLoggedIn } = useAuth();
 
     const parseSearchString = (searchText = '') => {
         const words = searchText.split(/\s+/);
@@ -113,7 +115,19 @@ function DisplayAllQuestions({ selectedTag, setSelectedQuestionId, searchText })
 
     const updateAnswers = (newAnswers) => {
             setAnswers(newAnswers);
-        };
+    };
+
+    const renderAskQuestionButton = () => {
+        if (isLoggedIn) { // Check if the user is logged in
+            return (
+                <button onClick={() => {/* logic to show AskQuestionForm */}}>
+                    Ask Question
+                </button>
+            );
+        }
+        return null;
+    };
+
 
     
     const handleQuestionSubmission = () => {
@@ -261,15 +275,17 @@ function DisplayAllQuestions({ selectedTag, setSelectedQuestionId, searchText })
                 <div className="question-heading questionsView">
                     <div className="question-options">
                     <div className="all-questions-sign">All Questions</div>
-                    <div>
-                        <button
-                        className="ask-questions-button"
-                        id="askQuestionButton"
-                        onClick={() => setShowForm(true)}
-                        >
-                        Ask Question
-                        </button>
-                    </div>
+                        <div>
+                            {isLoggedIn && ( // Conditionally render this button
+                                <button
+                                    className="ask-questions-button"
+                                    id="askQuestionButton"
+                                    onClick={() => setShowForm(true)}
+                                >
+                                    Ask Question
+                                </button>
+                            )}
+                        </div>
                     </div>
                     <div className="question-counter-sorting questionsView">
                     <div className="question-counter">{filteredQuestions.length} questions</div>
@@ -307,7 +323,7 @@ function DisplayAllQuestions({ selectedTag, setSelectedQuestionId, searchText })
                             </div>
                             </div>
                             <div className="question-meta">
-                            <p> <span style={{ color: 'red' }} > {question.asked_by} </span> asked <span className="time-ago">{timeAgo(question.ask_date_time)}</span></p>
+                            <p> <span style={{ color: 'red' }} > {question.ques_by} </span> asked <span className="time-ago">{timeAgo(question.ask_date_time)}</span></p>
                             </div>
                         </div>
                         </div>
