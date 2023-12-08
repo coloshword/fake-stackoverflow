@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useAuth } from './AuthContext';
 
 const LoginScreen = ({ onLoginSuccess, onCreateAccount }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const { logIn } = useAuth();
 
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
@@ -26,10 +28,9 @@ const LoginScreen = ({ onLoginSuccess, onCreateAccount }) => {
                 // Assuming you want to store the entire user object in local storage
                 // Be cautious about storing sensitive data in local storage
                 localStorage.setItem('user', JSON.stringify(data.user));
-    
-                console.log('Logged in as ' + data.user.questions);
-                console.log("LOGIN SUCCESS");
-                onLoginSuccess(data.user.questions);
+                console.log('Logged in as ' + typeof(data.user.username));
+                logIn(data.user.username); // Call logIn from AuthContext with the user data
+                onLoginSuccess(data.user.username);
             }
         } catch (error) {
             console.error('Login error', error);

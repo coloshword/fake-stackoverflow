@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {useAuth} from './AuthContext';
 
 const AnswerForm = ({ question, onAnswerPosted }) => {
   const [answerText, setAnswerText] = useState('');
   const [answerUsername, setAnswerUsername] = useState('');
+  const { username } = useAuth();
 
   const handleSubmit = async (e) => {
      e.preventDefault();
 
     const answerData = {
       text: answerText,
-      ans_by: answerUsername
+      ans_by: username
     };
     
     try {
@@ -43,7 +45,7 @@ const AnswerForm = ({ question, onAnswerPosted }) => {
   
   return (
     <form id="answerForm" onSubmit={handleSubmit}>
-      <div className="form-group">
+      {/* <div className="form-group">
         <label htmlFor="answerUsername">Username*</label>
         <input
           type="text"
@@ -53,7 +55,7 @@ const AnswerForm = ({ question, onAnswerPosted }) => {
           onChange={(e) => setAnswerUsername(e.target.value)}
           required
         />
-      </div>
+      </div> */}
       <div className="form-group">
         <label htmlFor="answerText">Answer Text*</label>
         <textarea

@@ -19,6 +19,7 @@ const HomeScreen = ({onBrowseAsGuest}) => {
         setShowCreateAccount(false);
     };
     const handleSuccessfulLogin = (username) => {
+        console.log("line 22: ", username);
         logIn(username); // Update the global auth state
     };
 

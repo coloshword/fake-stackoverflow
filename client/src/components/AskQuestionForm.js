@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import axios from 'axios';
+import {useAuth} from './AuthContext';
 
 
 function AskQuestionForm({ onSubmit, refreshQuestions }) {
     const [title, setTitle] = React.useState("");
     const [details, setDetails] = React.useState("");
     const [tags, setTags] = React.useState("");
-    const [username, setUsername] = React.useState("");
+    const { username } = useAuth();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,7 +27,7 @@ function AskQuestionForm({ onSubmit, refreshQuestions }) {
             setTitle("");
             setDetails("");
             setTags("");
-            setUsername("");
+            // setUsername("");
 
             console.log("questions is added to backend");
             onSubmit();
@@ -75,18 +77,6 @@ function AskQuestionForm({ onSubmit, refreshQuestions }) {
                         value={tags}
                         onChange={(e) => setTags(e.target.value)}
                         maxLength="50"
-                    />
-                </div>
-                <div className="form-group">
-                    <label className="question-label" htmlFor="username">Username*</label>
-                    <input 
-                        className="input-text" 
-                        type="text" 
-                        id="username" 
-                        placeholder="Username" 
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
                     />
                 </div>
                 <button className="submit-button" type="submit">Post Question</button>

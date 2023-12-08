@@ -40,6 +40,20 @@ async function fetchUserById(userId) {
         throw err; // Rethrow the error if you want to handle it in the calling function
     }
 }
+async function fetchUserByUsername(username) {
+    try {
+        const user = await User.findOne({ username: username });
+        if (!user) {
+            console.log('User not found');
+            return null; // Or handle this case as needed
+        }
+        return user;
+    } catch (err) {
+        console.error('Error fetching user by username:', err);
+        throw err; // Rethrow the error if you want to handle it in the calling function
+    }
+}
+
 
 // Example route for fetching questions
 app.get('/api/questions', async (req, res) => {
@@ -79,25 +93,41 @@ app.get('/api/tags', async (req, res) => {
 
 app.get('/api/answers', async (req, res) => {
     try {
-        const answers = await Answer.find({});
+        let answers = await Answer.find({}).populate('ans_by', 'username'); // Using populate to get username
+
+        // Convert Mongoose documents to plain objects to safely modify them
+        answers = answers.map(doc => doc.toObject());
+
+        for (let i = 0; i < answers.length; i++) {
+            // Check if 'ans_by' field is populated with user data
+            if (answers[i].ans_by && answers[i].ans_by.username) {
+                // Replace 'ans_by' with the username of the user
+                answers[i].ans_by = answers[i].ans_by.username;
+            } else {
+                // Handle the case where the user is not found or not populated
+                answers[i].ans_by = 'Unknown';
+            }
+        }
         res.json(answers);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Error fetching questions');
+        res.status(500).send('Error fetching answers');
     }
 });
+
 
 app.post('/api/answers', async (req, res) => {
     try {
         // Extracting data from request body
         const { text, ans_by } = req.body;
         const ans_date_time = new Date(); // Set the current date and time for the answer
+        const user = await fetchUserByUsername(ans_by);
 
         // Creating a new answer document
         const newAnswer = new Answer({
-            text,
-            ans_by,
-            ans_date_time
+            text: text,
+            ans_by: user._id,
+            ans_date_time: new Date()
         });
 
         // Saving the answer to the database
@@ -130,6 +160,8 @@ app.get('/api/answer/:answerId', async (req, res) => {
 app.post('/api/questions', async (req, res) =>{
     try{
         const { title, details, tags, askedBy } = req.body; // Include 'tags' in destructuring
+        const user = await fetchUserByUsername(askedBy);
+        console.log(user);
 
         // Validate that tags is an array, if necessary
         if (!Array.isArray(tags)) {
@@ -151,7 +183,7 @@ app.post('/api/questions', async (req, res) =>{
             title: title,
             text: details,
             tags: newTagIds, 
-            asked_by: askedBy,
+            ques_by: user._id,
             ask_date_time: new Date(),
             answers: [],
             views: 0
