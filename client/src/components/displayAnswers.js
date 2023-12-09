@@ -116,7 +116,7 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
                     </div>
                     <div className="question-meta">
                         <button className="ask-questions-button" onClick={onBack}>Back to Questions</button>
-                        <p className="red-question">{updatedQuestion.asked_by} asked <span className="time-ago">{timeAgo(updatedQuestion.ask_date_time)}</span></p>
+                        <p className="red-question">{updatedQuestion.ques_by} asked <span className="time-ago">{timeAgo(updatedQuestion.ask_date_time)}</span></p>
                     </div>
                 </div>
 

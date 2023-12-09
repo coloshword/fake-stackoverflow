@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import LoginScreen from './loginscreen'; // Import LoginComponent
 import CreateAccount from './createaccount';
+import AdminView from './adminView';
 import { useAuth } from './AuthContext';
 
 const HomeScreen = ({onBrowseAsGuest}) => {
     const [showLogin, setShowLogin] = useState(false);
     const [showCreateAccount, setShowCreateAccount] = useState(false);
+    const [isAdminView, setIsAdminView] = useState(false);
     const { logIn } = useAuth();
     
 
@@ -20,12 +22,24 @@ const HomeScreen = ({onBrowseAsGuest}) => {
     };
     const handleSuccessfulLogin = (username) => {
         console.log("line 22: ", username);
-        logIn(username); // Update the global auth state
+        // logIn(username); // Update the global auth state
+        if (username === 'admin') {
+            setIsAdminView(true); // Set admin view if admin logs in
+        }
+    };
+
+    const handleUserSelection = (username) => {
+        logIn(username); // Log in the selected user
+        setIsAdminView(false); // Disable AdminView
     };
 
     const handleAccountCreationAndLogin = (username) => {
         logIn(username); // Transition to main view after account creation and login
     };
+
+    if (isAdminView) {
+        return <AdminView onUserClick={handleUserSelection} />; // Render AdminView if admin is logged in
+    }
 
     if (showCreateAccount) {
         return <CreateAccount onAccountCreationAndLogin={handleAccountCreationAndLogin} />;

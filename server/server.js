@@ -8,6 +8,7 @@ const Tag = require('./models/tags');
 const Answer = require('./models/answers');
 const User = require('./models/users');
 const Comment = require('./models/comments');
+const Admin = require('./models/admin');
 
 
 const app = express();
@@ -40,6 +41,7 @@ async function fetchUserById(userId) {
         throw err; // Rethrow the error if you want to handle it in the calling function
     }
 }
+
 async function fetchUserByUsername(username) {
     try {
         const user = await User.findOne({ username: username });
@@ -258,10 +260,92 @@ app.get('/api/question/:questionId', async (req, res) => {
     }
 });
 
+app.get('/api/admin/users', async (req, res) => {
+    try {
+        // Fetch the single admin document
+        const admin = await Admin.findOne().populate('users');
+        if (!admin) {
+            return res.status(404).send('Admin not found');
+        }
+
+        res.json({ users: admin.users });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/api/admin/details', async (req, res) => {
+    try {
+        // Assuming there's only one admin in your database
+        const admin = await Admin.findOne(); // Find the admin document
+
+        if (!admin) {
+            return res.status(404).send('Admin not found');
+        }
+
+        // Send the user_date_time of the admin
+        res.json({ user_date_time: admin.user_date_time });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.delete('/api/admin/users/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Delete related questions, answers, comments, and tags
+        await Question.deleteMany({ ques_by: userId });
+        await Answer.deleteMany({ ans_by: userId });
+        await Comment.deleteMany({ comment_by: userId });
+        // If tags are solely owned by a user, delete them as well
+        // await Tag.deleteMany({ createdBy: userId });
+
+        // Finally, delete the user
+        await User.deleteOne({ _id: userId });
+
+        res.status(200).send('User and all related data successfully deleted');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
+app.post('/api/admin/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        const admin = await Admin.findOne({ username: username });
+        if (!admin) {
+            return res.status(401).send('Admin not found');
+        }
+
+        const validPassword = await bcrypt.compare(password, admin.password);
+        if (!validPassword) {
+            return res.status(401).send('Invalid credentials');
+        }
+
+        // Fetching the users associated with the admin
+        const users = await User.find({ '_id': { $in: admin.users } });
+
+        res.json({ message: 'Admin logged in successfully', users: users });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 app.post('/api/users/login', async (req, res) => {
     try {
-        // Find user by username
         const user = await User.findOne({ username: req.body.username });
         console.log(user);
         if (!user) {
@@ -320,6 +404,12 @@ app.post('/api/users/register', async (req, res) => {
 
         // Save new user
         await newUser.save();
+
+        const admin = await Admin.findOne(); // Assuming there's only one admin
+        if (admin) {
+            admin.users.push(newUser._id);
+            await admin.save();
+        }
 
         // Response after successful account creation
         res.status(201).json({ message: 'Account created successfully', username: newUser.username });

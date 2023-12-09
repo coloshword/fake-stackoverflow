@@ -18,19 +18,22 @@ const LoginScreen = ({ onLoginSuccess, onCreateAccount }) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:8000/api/users/login', {
+            const route = username === 'admin' ? '/api/admin/login' : '/api/users/login';
+            const response = await fetch(`http://localhost:8000${route}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
             });
             const data = await response.json();
             if (data.user) {
-                // Assuming you want to store the entire user object in local storage
-                // Be cautious about storing sensitive data in local storage
                 localStorage.setItem('user', JSON.stringify(data.user));
-                console.log('Logged in as ' + typeof(data.user.username));
-                logIn(data.user.username); // Call logIn from AuthContext with the user data
-                onLoginSuccess(data.user.username);
+                console.log('Logged in as ' + data.user.username);
+                logIn(data.user.username); // Call logIn with the user data
+                onLoginSuccess(data.user.username, false); // false indicates regular user
+            } else if (data.users) { // Specific response structure for admin login
+                // Handle admin login
+                console.log('Admin logged in', data);
+                onLoginSuccess(username, true); // true indicates admin
             }
         } catch (error) {
             console.error('Login error', error);
