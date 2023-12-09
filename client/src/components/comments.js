@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+import {useAuth} from './AuthContext';
 
 //IMPORTANT: question, can be a question , or an answer (since both question and answer have comments)
 const Comments = ({ isQuestion, question }) => {
@@ -8,6 +9,7 @@ const Comments = ({ isQuestion, question }) => {
     const [fullComments, setFullComments] = useState([]);
     const [refreshComments, setRefreshComments] = useState(false); 
     const [currentQuestion, setCurrentQuestion] = useState(question);  // use it to retrieve new object from db
+    const { username } = useAuth();
 
     useEffect(() => {
         const fetchComments = async () => {
@@ -67,13 +69,28 @@ const Comments = ({ isQuestion, question }) => {
         }
     }
 
+    /*
+    * handleUpVote: handles upvoting a comment by adding the user's id to the comment's upvote array
+    */
+    const handleUpVote = async () => {
+        if(username == null) {
+            alert("You must be logged in to upvote a comment");
+            return;
+        }
+        console.log("upvoting comment " + username);
+    }
+
     return (
         <div className="question-comments">
             <div className="comments-inner">
                 <div className="comment-display">
                     {fullComments.map((comment, index) => (
-                        <div className="comment">
-                            <span key={index}>{comment.text}</span> 
+                        <div className="comment" key={index}>
+                            <div className="count-voteBtn-container">
+                                <button className="vote-btn" onClick={handleUpVote}></button>
+                                <span> {comment.com_vote.length} </span>
+                            </div>
+                            <span className="comment-text">{comment.text}</span> 
                         </div>
                     ))}
                 </div>

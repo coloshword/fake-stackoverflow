@@ -4,7 +4,7 @@ import CreateAccount from './createaccount';
 import AdminView from './adminView';
 import { useAuth } from './AuthContext';
 import lebronJames from './lebron.jpeg';
-import styles from '/Users/aneeshsurasani/Downloads/CSE316/projectfakeso-team-lemickey/client/src/stylesheets/HomeScreen.module.css';
+import styles from '../stylesheets/HomeScreen.module.css';
 
 const HomeScreen = ({onBrowseAsGuest}) => {
     const [showLogin, setShowLogin] = useState(false);

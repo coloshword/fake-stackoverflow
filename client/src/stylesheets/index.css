@@ -2,6 +2,7 @@
 body {
   margin: 0;
   padding: 0;
+  font-size: 16px;
 }
 
 /* Style for the header 
@@ -398,8 +399,34 @@ input[type="text"] {
 }
 
 .comment {
-  padding: 1rem;
+  padding: 0.5rem;
   border-bottom:solid 1px #d8dbdd;
+  display: flex;
+  flex-direction: row;
+}
+
+.count-voteBtn-container {
+  margin-right: 5%;
+  font-size: 12px;
+  color: #626b74;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.comment-text {
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+}
+
+.vote-btn {
+  all: unset;
+  background-image: url('../../assets/comment-upvote.svg');
+  height: 1rem;
+  width: 1rem;
+  cursor: pointer;
+
 }
 .new-comment {
   border:none !important;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '/Users/aneeshsurasani/Downloads/CSE316/projectfakeso-team-lemickey/client/src/stylesheets/CreateAccount.module.css';
+import styles from '../stylesheets/CreateAccount.module.css';
 
 const CreateAccount = ({ onAccountCreationAndLogin }) => {
     const [username, setUsername] = useState('');
