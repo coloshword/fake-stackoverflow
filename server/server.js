@@ -56,6 +56,23 @@ async function fetchUserByUsername(username) {
     }
 }
 
+/* get userID given username */
+app.get('/api/user/:username', async (req, res) => {
+    try {
+        const username = req.params.username; 
+        const user = await fetchUserByUsername(username);
+
+        if (user) {
+            res.json(user.id); 
+        } else {
+            res.status(404).send('User not found'); 
+        }
+    } catch (err) {
+        console.error('Error in /api/user/:username route:', err);
+        res.status(500).send('could not get userid from username');
+    }
+});
+
 
 // Example route for fetching questions
 app.get('/api/questions', async (req, res) => {
@@ -427,7 +444,7 @@ app.post('/api/add_comment', async (req, res) => {
             text: newComment,
             comment_by: "username", 
             com_date_time: new Date(),
-            com_vote: 0
+            com_vote: [] // empty array because no upvotes yet
         });
         await comment.save();
 
@@ -467,6 +484,27 @@ app.get('/api/comment/:commentId', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Error fetching the comment');
+    }
+});
+
+app.patch('/api/comment/:commentId', async (req, res) => {
+    try{
+        const { username } = req.body;
+        const { commentId } = req.params;
+        const comment = await Comment.findById(commentId);
+        const user = await fetchUserByUsername(username);
+        if (!comment) {
+            return res.status(404).send('Comment not found');
+        }
+        if(!user) {
+            return res.status(404).send('User not found');
+        }
+        comment.com_vote.push(user._id);
+        await comment.save();
+        return res.status(200).json("good job");
+    } catch(err) {
+        console.log(err);
+        res.status(500).send('Error updating the comment');
     }
 });
 

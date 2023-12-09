@@ -14,10 +14,11 @@ const commentSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    com_vote: {
-        type: Number,
-        default: 0
-    }
+    com_vote: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: [],
+    }],
 });
 
 commentSchema.virtual('url').get(function() {

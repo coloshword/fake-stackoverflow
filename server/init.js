@@ -128,9 +128,9 @@ const populate = async () => {
   let t4 = await tagCreate('shared-preferences');
 
   // Create comments
-  let c1 = await commentCreate('COMMENT 1', 'user123', false, 2);
-  let c2 = await commentCreate('COMMENT 2.', 'user124', false, 8);
-  let c3 = await commentCreate('COMMENT 3', 'user123', false, 3);
+  let c1 = await commentCreate('COMMENT 1', 'user123', false, []);
+  let c2 = await commentCreate('COMMENT 2.', 'user124', false, []);
+  let c3 = await commentCreate('COMMENT 3', 'user123', false, []);
 
   // Create an initial user without references
   let u1 = await userCreate('sampleUser', 'samplePassword', 'sampleuser@example.com', 100, [], [], [], false);
