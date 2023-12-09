@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from '/Users/aneeshsurasani/Downloads/CSE316/projectfakeso-team-lemickey/client/src/stylesheets/CreateAccount.module.css';
 
 const CreateAccount = ({ onAccountCreationAndLogin }) => {
     const [username, setUsername] = useState('');
@@ -57,50 +58,50 @@ const CreateAccount = ({ onAccountCreationAndLogin }) => {
     };
 
     return (
-        <div>
-            <h2>Create Account</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>
-                        Username:
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </label>
+        <div className={styles.createAccountContainer}>
+            <h2 className={styles.formTitle}>Create Account</h2>
+            <form onSubmit={handleSubmit} className={styles.accountForm}>
+                <div className={styles.formGroup}>
+                    <label htmlFor="username" className={styles.formLabel}>Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className={styles.formInput}
+                    />
                 </div>
-                <div>
-                    <label>
-                        Password:
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </label>
+                <div className={styles.formGroup}>
+                    <label htmlFor="password" className={styles.formLabel}>Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className={styles.formInput}
+                    />
                 </div>
-                <div>
-                    <label>
-                        Verify Password:
-                        <input
-                            type="password"
-                            value={verifyPassword}
-                            onChange={(e) => setVerifyPassword(e.target.value)}
-                        />
-                    </label>
+                <div className={styles.formGroup}>
+                    <label htmlFor="verifyPassword" className={styles.formLabel}>Verify Password:</label>
+                    <input
+                        type="password"
+                        id="verifyPassword"
+                        value={verifyPassword}
+                        onChange={(e) => setVerifyPassword(e.target.value)}
+                        className={styles.formInput}
+                    />
                 </div>
-                <div>
-                    <label>
-                        Email:
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </label>
+                <div className={styles.formGroup}>
+                    <label htmlFor="email" className={styles.formLabel}>Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className={styles.formInput}
+                    />
                 </div>
-                <button type="submit">Create Account</button>
+                <button type="submit" className={styles.submitButton}>Create Account</button>
             </form>
         </div>
     );

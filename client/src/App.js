@@ -1,6 +1,8 @@
 // ************** THIS IS YOUR APP'S ENTRY POINT. CHANGE THIS FILE AS NEEDED. **************
 // ************** DEFINE YOUR REACT COMPONENTS in ./components directory **************
 import './stylesheets/App.css';
+import './stylesheets/HomeScreen.module.css';
+import './stylesheets/CreateAccount.module.css';
 import FakeStackOverflow from './components/fakestackoverflow.js'
 
 function App() {

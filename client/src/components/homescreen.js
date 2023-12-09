@@ -3,6 +3,8 @@ import LoginScreen from './loginscreen'; // Import LoginComponent
 import CreateAccount from './createaccount';
 import AdminView from './adminView';
 import { useAuth } from './AuthContext';
+import lebronJames from './lebron.jpeg';
+import styles from '/Users/aneeshsurasani/Downloads/CSE316/projectfakeso-team-lemickey/client/src/stylesheets/HomeScreen.module.css';
 
 const HomeScreen = ({onBrowseAsGuest}) => {
     const [showLogin, setShowLogin] = useState(false);
@@ -23,10 +25,9 @@ const HomeScreen = ({onBrowseAsGuest}) => {
     const handleSuccessfulLogin = (username) => {
         console.log("line 22: ", username);
         // logIn(username); // Update the global auth state
-        if (username === 'admin') {
+        if (username === 'admin') 
             setIsAdminView(true); // Set admin view if admin logs in
-        }
-    };
+    }
 
     const handleUserSelection = (username) => {
         logIn(username); // Log in the selected user
@@ -50,25 +51,28 @@ const HomeScreen = ({onBrowseAsGuest}) => {
     }
 
     return (
-        <div style={{ textAlign: 'center', marginTop: '50px' }}>
-            <h1>Welcome to Fake StackOverflow</h1>
-            <p>Your go-to hub for coding solutions and community discussions.</p>
-            <p>Join us to share knowledge and grow your development skills!</p>
-            
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h1 className={styles.title}>Welcome to Fake StackOverflow</h1>
+                {/* Add the img tag below the h1 tag */}
+                <img src={lebronJames} alt="Descriptive Alt Text" style={{ maxWidth: '100%', height: 'auto' }} />
+                <p className={styles.subtitle}>Your go-to hub for coding solutions and community discussions.</p>
+                <p className={styles.subtitle}>Join us to share knowledge and grow your development skills!</p>
+            </div>
             <button 
-                style={{ marginRight: '10px', padding: '10px 20px', fontSize: '16px' }}
-                onClick={handleLoginClick} // Add onClick handler for login
+                className={`${styles.button} ${styles.mainActionButton}`}
+                onClick={handleLoginClick}
             >
                 Login
             </button>
             <button 
-                style={{ marginRight: '10px', padding: '10px 20px', fontSize: '16px' }}
+                className={`${styles.button} ${styles.mainActionButton}`}
                 onClick={handleCreateAccountClick}
             >
                 Create Account
             </button>
             <button 
-                style={{ padding: '10px 20px', fontSize: '16px' }}
+                className={`${styles.button} ${styles.mainActionButton}`}
                 onClick={onBrowseAsGuest}
             >
                 Browse as Guest
