@@ -403,6 +403,12 @@ input[type="text"] {
   border-bottom:solid 1px #d8dbdd;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+}
+
+.comment-text-vote-wrapper {
+  display: flex;
+  flex-direction: row;
 }
 
 .count-voteBtn-container {
@@ -420,14 +426,31 @@ input[type="text"] {
   justify-content: center;
 }
 
+.comment-by {
+  color: #1b76cf;
+}
+
+.comment-time {
+  color:#a7adb4;
+  font-style: italic;
+  font-size: 10px;
+}
 .vote-btn {
   all: unset;
   background-image: url('../../assets/comment-upvote.svg');
   height: 1rem;
   width: 1rem;
   cursor: pointer;
-
 }
+
+.vote-btn-up {
+  all: unset;
+  background-image: url('../../assets/comment-upvoted.svg');
+  height: 1rem;
+  width: 1rem;
+  pointer-events: none; /* cant interact with it, so no "double upvoting" */
+}
+
 .new-comment {
   border:none !important;
   width: 100%;
@@ -444,6 +467,11 @@ input[type="text"] {
 }
 
 .answer-comment-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-data {
   display: flex;
   flex-direction: column;
 }
