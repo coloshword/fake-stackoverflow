@@ -439,10 +439,10 @@ app.post('/api/users/register', async (req, res) => {
 app.post('/api/add_comment', async (req, res) => {
     try {
         console.log(req.body);
-        const { isQuestion, question, newComment } = req.body;
+        const { isQuestion, question, comment_by, newComment } = req.body;
         const comment = new Comment({
             text: newComment,
-            comment_by: "username", 
+            comment_by: comment_by, 
             com_date_time: new Date(),
             com_vote: [] // empty array because no upvotes yet
         });
