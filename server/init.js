@@ -94,7 +94,7 @@ function tagCreate(name) {
 }
 
 function answerCreate(text, ans_by, ans_date_time, ans_vote, comments) {
-    let answerDetail = { text: text, ans_by: ans_by };
+    let answerDetail = { text: text, ans_by: ans_by, upvoters: [], downvoters: [] };
     if (ans_date_time != false) answerDetail.ans_date_time = ans_date_time;
     if (ans_vote != undefined) answerDetail.ans_vote = ans_vote;
     if (comments != undefined) answerDetail.comments = comments;

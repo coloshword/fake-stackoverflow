@@ -25,6 +25,16 @@ const answerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }],
+    upvoters: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: []
+    }],
+    downvoters: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        default: []
+    }],
 });
 
 answerSchema.virtual('url').get(function() {
