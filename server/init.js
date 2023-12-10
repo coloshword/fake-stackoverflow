@@ -108,7 +108,9 @@ function questionCreate(title, text, tags, answers, asked_by, ask_date_time, vie
     title: title,
     text: text,
     tags: tags,
-    ques_by: asked_by
+    ques_by: asked_by,
+    upvoters: [],
+    downvoters: [],
   }
   console.log(qstndetail);
   if (answers != false) qstndetail.answers = answers;

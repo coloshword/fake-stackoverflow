@@ -487,8 +487,9 @@ app.get('/api/comment/:commentId', async (req, res) => {
     }
 });
 
+/* Add to comment upvote array */
 app.patch('/api/comment/:commentId', async (req, res) => {
-    try{
+    try {
         const { username } = req.body;
         const { commentId } = req.params;
         const comment = await Comment.findById(commentId);
@@ -496,17 +497,82 @@ app.patch('/api/comment/:commentId', async (req, res) => {
         if (!comment) {
             return res.status(404).send('Comment not found');
         }
-        if(!user) {
+        if (!user) {
             return res.status(404).send('User not found');
         }
-        comment.com_vote.push(user._id);
-        await comment.save();
-        return res.status(200).json("good job");
-    } catch(err) {
+        const userId = user._id;
+        const index = comment.com_vote.indexOf(userId);
+        if (index > -1) {
+            // already upvoted, remove their upvote
+            comment.com_vote.splice(index, 1);
+            await comment.save();
+            return res.status(200).json("Upvote removed");
+        } else {
+            // not upvoted, add 
+            comment.com_vote.push(userId);
+            await comment.save();
+            return res.status(200).json("Upvote added");
+        }
+    } catch (err) {
         console.log(err);
         res.status(500).send('Error updating the comment');
     }
 });
+
+
+/* Add to voting interface */
+app.patch('/api/voting/:questOrAnsId', async (req, res) => {
+    try {
+        const { isQuestion, isUpvote, voterUsername } = req.body;
+        const passedId = req.params.questOrAnsId;
+        let questOrAns;
+        if (isQuestion) {
+            questOrAns = await Question.findById(passedId);
+        } else {
+            questOrAns = await Answer.findById(passedId);
+        }
+        if (!questOrAns) {
+            return res.status(404).json({ message: "Question or Answer not found" });
+        }
+        const voterUser = await fetchUserByUsername(voterUsername);
+        if (!voterUser) {
+            return res.status(404).json({ message: "Voter user not found" });
+        }
+        const voterId = voterUser._id;
+        if (isUpvote) {
+            const index = questOrAns.upvoters.indexOf(voterId);
+            if (index > -1) {
+                questOrAns.upvoters.splice(index, 1); // User already upvoted, so remove their vote
+            } else {
+                questOrAns.upvoters.push(voterId); // Add upvote
+                // Remove from downvote array if it exists
+                const downvoteIndex = questOrAns.downvoters.indexOf(voterId);
+                if (downvoteIndex > -1) {
+                    questOrAns.downvoters.splice(downvoteIndex, 1);
+                }
+            }
+        } else {
+            const index = questOrAns.downvoters.indexOf(voterId);
+            if (index > -1) {
+                questOrAns.downvoters.splice(index, 1); // User already downvoted, so remove their vote
+            } else {
+                questOrAns.downvoters.push(voterId); // Add downvote
+                // Remove from upvote array if it exists
+                const upvoteIndex = questOrAns.upvoters.indexOf(voterId);
+                if (upvoteIndex > -1) {
+                    questOrAns.upvoters.splice(upvoteIndex, 1);
+                }
+            }
+        }
+        await questOrAns.save();
+        return res.status(200).json(questOrAns);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Error updating the question or answer');
+    }
+});
+
+
 
 
 

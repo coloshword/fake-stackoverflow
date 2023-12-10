@@ -94,7 +94,7 @@ const Comments = ({ isQuestion, question }) => {
             setRefreshComments((prevRefreshComments) => !prevRefreshComments);
         }
         catch(error) {
-            console.error('Error upvoting comment: ', error);
+            return; // means that you already upvoted!
         }
     }
 

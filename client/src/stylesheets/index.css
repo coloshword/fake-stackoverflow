@@ -1,4 +1,8 @@
 /* Add your CSS here */
+
+/* fonts*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+
 body {
   margin: 0;
   padding: 0;
@@ -434,6 +438,7 @@ input[type="text"] {
   color:#a7adb4;
   font-style: italic;
   font-size: 10px;
+  text-align: right;
 }
 .vote-btn {
   all: unset;
@@ -448,7 +453,7 @@ input[type="text"] {
   background-image: url('../../assets/comment-upvoted.svg');
   height: 1rem;
   width: 1rem;
-  pointer-events: none; /* cant interact with it, so no "double upvoting" */
+  cursor: pointer;
 }
 
 .new-comment {
@@ -564,6 +569,69 @@ label {
 }
 
 
+/* Vote interface */
+.vote-interface-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.vote-interface-upvote {
+  all: unset;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  border: solid 1.5px #d9dddf;
+  cursor: pointer;
+}
+.vote-interface-upvote:hover {
+  background-color:  #fbdbc1;
+}
+
+.vote-interface-upvoted {
+  all: unset;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  background-color:  #fbdbc1;
+  border: solid 1.5px #e76f0f;
+  cursor: pointer;
+}
+
+.vote-interface-downvote {
+  all: unset;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  border: solid 1.5px #d9dddf;
+  cursor: pointer;
+}
+
+.vote-interface-downvote:hover {
+  background-color: #b6dce8;
+}
+
+.vote-interface-downvoted {
+  all: unset;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  border: solid 1.5px #778bd4;
+  background-color: #b6dce8;
+  cursor: pointer;
+}
+
+.vote-interface-num {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 1.6rem;
+}
+
+.iconArrowUp {
+  background-color: #3b4044;
+}
 /* card from boostrap */
 .card {
   position: relative;

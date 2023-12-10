@@ -3,6 +3,7 @@ import AnswerForm from './answerform';
 import Comments from './comments';
 import axios from 'axios';
 import { timeAgo } from "../helpers/timeago";
+import { VoteInterface } from "./voteInterface"
 
 const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
     console.log('DisplayAnswers component called');
@@ -83,6 +84,7 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
             <div className="card"> 
                 <div className="card-body bordered"> 
                 <div className="question-display">
+                    <VoteInterface questOrAns={updatedQuestion} isQuestion={true}/>
                     <div className="question-stats">
                         <p><span className="answer-count">{updatedQuestion.answers.length}</span> Answers</p>
                         <p><span className="view-count">{updatedQuestion.views}</span> Views</p>

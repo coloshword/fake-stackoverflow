@@ -37,6 +37,16 @@ const questionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }],
+    upvoters: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: []
+    }],
+    downvoters: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        default: []
+    }],
 });
 
 questionSchema.virtual('url').get(function() {
