@@ -119,12 +119,15 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
                     <div class="card">
                         <div class="card-body bordered">
                             <div className="answer-comment-wrapper">
-                                <div className="answer" key={aid}>
-                                    <p className="answer-text">{answer.text}</p>
-                                    <p className="answer-meta" style={{ color: 'green' }}>
+                                    <div className="answer-vote-container" key={aid}>
+                                        <div className="answer-text-vote-wrapper">
+                                            <VoteInterface questOrAns={answer} isQuestion={false}/>
+                                            <p className="answer-text">{answer.text}</p>
+                                        </div>
+                                        <p className="answer-meta" style={{ color: 'green' }}>
                                         {answer.ans_by} answered <span className="time-ago">{timeAgo(answer.ans_date_time)}</span>
                                     </p>
-                                </div>
+                                    </div>
                                 <Comments isQuestion={false} question={answer} />
                             </div>
                         </div>
