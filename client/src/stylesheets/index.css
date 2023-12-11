@@ -40,31 +40,30 @@ for Title: Fake Stack OverFlow*/
 
 /* Style for the input for searchbar*/
 input[type="text"] {
-  padding: 5px; /* Add some padding to the input field */
-  border: 1px solid #ccc; /* Add a border to the input field */
-  border-radius: 5px; /* Add rounded corners to the input field */
+  padding: 5px; 
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
 }
 
 
 
 
 .container {
-  display: flex; /* Use flexbox to create a two-column layout */
+  display: flex;
 }
 
 .sidebar {
   height: 100vh;
-  /* Add a dotted border to the sidebar */
-  border-right: 2.5px dashed rgb(0, 0, 0); /* You can adjust the border width and color as needed */
-  width: 250px; /* Set the width of the sidebar */
-  background-color: rgb(255, 255, 255); /* Set the background color of the sidebar
-  color: #fff; /* Set text color */
-  padding: 20px; /* Add padding to the sidebar content */
+  border-right: 2.5px dashed rgb(0, 0, 0); 
+  width: 250px; 
+  background-color: rgb(255, 255, 255); 
+  color: #fff; 
+  padding: 20px; 
 }
 
 .content {
   flex-grow: 1; /* Allow the main content to fill the remaining space */
-  padding: 20px; /* Add padding to the main content */
+  padding: 20px; 
 }
 
 .transparent-button {
@@ -87,7 +86,7 @@ input[type="text"] {
 
 /* Styles for selected buttons */
 .transparent-button.selected {
-  background-color: rgb(162, 162, 162); /* Change to the desired gray color */
+  background-color: rgb(162, 162, 162); 
 }
 
 .question-options {
@@ -175,7 +174,7 @@ input[type="text"] {
   border-right: none;
   padding: 10px;
   cursor: pointer;
-  margin: 0 -20px; /* Counteract the padding of .content */
+  margin: 0 -20px; 
 }
 
 
@@ -269,7 +268,6 @@ input[type="text"] {
 }
 
 
-/* ... Rest of the CSS ... */
 
 .footer-form-container {
   display: flex;
@@ -516,6 +514,12 @@ input[type="text"] {
   justify-content: center;
 }
 
+.together-div {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: left;
+}
 .comment-switch-left, .comment-switch-right {
   all: unset;
   cursor: pointer;
@@ -572,7 +576,7 @@ label {
 }
 
 .submit-container {
-  display: flex; /* Arranges child elements in a row */
+  display: flex; 
   justify-content: space-between; /* Maximizes space between child elements */
   align-items: center; /* Vertical alignment of child elements */
 }
@@ -581,21 +585,21 @@ label {
   background-color: blue;
   color: white;
   border: none;
-  padding: 10px 20px; /* Adjust as needed */
+  padding: 10px 20px; 
   cursor: pointer;
 }
 
 .mandatory-field-note {
-  font-size: 12px; /* Adjust as needed */
-  color: red; /* Color can be adjusted as needed */
+  font-size: 12px; 
+  color: red; 
 }
 #answerText {
-  resize: none;       /* Prevents user resizing */
-  width: 100%;        /* Adjust width as needed, 100% will make it full width of its container */
-  height: 200px;      /* Adjust height as needed */
-  font-size: 16px;    /* Adjust font size as needed */
-  padding: 10px;      /* Adds some space inside the box */
-  box-sizing: border-box; /* Includes padding and border in the total width and height */
+  resize: none;      
+  width: 100%;      
+  height: 200px;      
+  font-size: 16px;    
+  padding: 10px;      
+  box-sizing: border-box; 
 }
 
 .ask-question-form {
@@ -765,4 +769,10 @@ label {
 .basic-margin {
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+.switch-page-title-answers-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
 }

@@ -33,12 +33,12 @@ async function fetchUserById(userId) {
         const user = await User.findById(userId);
         if (!user) {
             console.log('User not found');
-            return null; // Or handle this case as needed
+            return null; 
         }
         return user;
     } catch (err) {
         console.error('Error fetching user:', err);
-        throw err; // Rethrow the error if you want to handle it in the calling function
+        throw err; 
     }
 }
 
@@ -47,12 +47,12 @@ async function fetchUserByUsername(username) {
         const user = await User.findOne({ username: username });
         if (!user) {
             console.log('User not found');
-            return null; // Or handle this case as needed
+            return null; 
         }
         return user;
     } catch (err) {
         console.error('Error fetching user by username:', err);
-        throw err; // Rethrow the error if you want to handle it in the calling function
+        throw err; 
     }
 }
 
@@ -293,7 +293,6 @@ app.get('/api/admin/users', async (req, res) => {
 
 app.get('/api/admin/details', async (req, res) => {
     try {
-        // Assuming there's only one admin in your database
         const admin = await Admin.findOne(); // Find the admin document
 
         if (!admin) {

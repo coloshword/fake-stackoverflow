@@ -12,6 +12,7 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
     const [answers, setAnswers] = useState([]);
     const [updatedQuestion, setQuestion] = useState(question);
     const [isLoading, setIsLoading] = useState(true);
+    const [answerPage, setAnswerPage] = useState(0);
 
 
     console.log('Before useEffect');
@@ -20,8 +21,6 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
     useEffect(() => {
         console.log('useEffect called');
         // Fetch answers initially and whenever question.ansIds changes
-        const fetchedAnswers = question.answers;
-        console.log(fetchedAnswers);
         const getAnswers = async() => {
             setIsLoading(true);
             try{
@@ -64,6 +63,83 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
         
     };
 
+    const renderAnswer = (answer) => {
+        if (!answer) {
+            console.log(`Answer not found`);
+            return null;
+        }
+        return (
+            <div className="card" key={answer._id}>
+                <div className="card-body bordered">
+                    <div className="answer-comment-wrapper">
+                        <div className="answer-vote-container">
+                            <div className="answer-text-vote-wrapper">
+                                <VoteInterface questOrAns={answer} isQuestion={false}/>
+                                <p className="answer-text">{answer.text}</p>
+                            </div>
+                            <p className="answer-meta" style={{ color: 'green' }}>
+                                {answer.ans_by} answered <span className="time-ago">{timeAgo(answer.ans_date_time)}</span>
+                            </p>
+                        </div>
+                        <Comments isQuestion={false} question={answer} />
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    const handleLeft = () => {
+        let pageMin = 0;
+        if (answerPage > pageMin) {
+            setAnswerPage(answerPage - 1);
+        }
+    };
+    
+    const handleRight = () => {
+        let pageMax = Math.floor((answers.length - 1) / 5);
+        if (answerPage < pageMax) {
+            setAnswerPage(answerPage + 1);
+        }
+    };
+
+    const switchAnswerPageBtn = () => {
+        let pageMin = 0;
+        let pageMax = Math.floor((answers.length - 1) / 5);
+        if(pageMax < 0) {
+            pageMax = 0;
+        }
+        console.log("PAGE MAX " + pageMax)
+        return (
+            <div className="comment-switch-container">
+                <button 
+                    className={`comment-switch-left ${answerPage === pageMin ? 'disabled-button' : ''}`}
+                    onClick={handleLeft}
+                    disabled={answerPage === pageMin}>
+                </button>
+                <span className="comment-page">{answerPage}</span>
+                <button 
+                    className={`comment-switch-right ${answerPage === pageMax ? 'disabled-button' : ''}`}
+                    onClick={handleRight}
+                    disabled={answerPage === pageMax}>
+                </button>
+            </div>
+        );
+    };
+
+    const renderAnswers = (page) => {
+        const answersPerPage = 5;
+        const startIndex = page * answersPerPage;
+        const endIndex = startIndex + answersPerPage;
+        const answersToRender = [...updatedQuestion.answers].reverse().slice(startIndex, endIndex);
+    
+        return answersToRender.map(answerId => {
+            const answer = answers.find(ans => ans._id === answerId);
+            return renderAnswer(answer);
+        });
+    };
+    
+    
+
     // Function to handle clicking on the "Answer Question" button
    
     if (showAnswerForm) {
@@ -77,7 +153,7 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
         );
     }
     if (isLoading) {
-        return <div>Loading answers...</div>; // Or any other placeholder content
+        return <div>Loading answers...</div>; 
     }
     return (
         <div className="content">
@@ -105,35 +181,18 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
                 question = {question} />
                 </div>
             </div>
-            {/* Assuming answers are part of the question object */}
             <div className="answers-container">
-            {updatedQuestion.answers.map(aid => {
-                const answer = answers.find(ans => ans._id === aid);
+            <div className="switch-page-title-answers-container">
+                <h2 style={{ color: 'green', lineHeight:'100%'}}> Answers </h2>
+                <div className="together-div">
+                    Displaying answers page: 
+                    <span style={{ position: 'relative', top: '-1px', left:'10px'}}>
+                        {switchAnswerPageBtn()}
+                    </span>
+                </div>
 
-                if (!answer) {
-                    console.log(`Answer not found for id: ${aid}`);
-                    return null;
-                }
-
-                return (
-                    <div className="card" key={aid}> 
-                        <div className="card-body bordered">
-                            <div className="answer-comment-wrapper">
-                                    <div className="answer-vote-container" key={aid}>
-                                        <div className="answer-text-vote-wrapper">
-                                            <VoteInterface questOrAns={answer} isQuestion={false}/>
-                                            <p className="answer-text">{answer.text}</p>
-                                        </div>
-                                        <p className="answer-meta" style={{ color: 'green' }}>
-                                        {answer.ans_by} answered <span className="time-ago">{timeAgo(answer.ans_date_time)}</span>
-                                    </p>
-                                    </div>
-                                <Comments isQuestion={false} question={answer} />
-                            </div>
-                        </div>
-                    </div>
-                );
-            })}
+            </div>
+                {renderAnswers(answerPage)}
             </div>
             {/* "Answer Question" button */}
             <div className="answer-question basic-margin">
