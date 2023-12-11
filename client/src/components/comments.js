@@ -4,6 +4,39 @@ import { useEffect } from "react";
 import {useAuth} from './AuthContext';
 import { timeAgo } from "../helpers/timeago";
 
+const CommentInputField = ({ isQuestion, question, updateQuestion }) => {
+    const [newComment, setNewComment] = useState("");
+    const { username } = useAuth();
+
+    const newCommentChange = (e) => {
+        setNewComment(e.target.value);
+    }
+
+    const newCommentEnter = async (e) => {
+        if (e.key === "Enter" && newComment !== "") {
+            const commentObj = { isQuestion: isQuestion, question: question._id, comment_by: username, newComment };
+            try {
+                await axios.post('http://localhost:8000/api/add_comment', commentObj);
+                setNewComment("");
+                updateQuestion();
+            } catch (error) {
+                console.error('Error posting comment: ', error);
+            }
+        }
+    }
+
+    return (
+        <div className="new-commentField">
+            <input type="text"
+                   className="new-comment"
+                   placeholder="Add a comment"
+                   onChange={newCommentChange}
+                   value={newComment}
+                   onKeyDown={newCommentEnter} />
+        </div>
+    );
+};
+
 //IMPORTANT: question, can be a question , or an answer (since both question and answer have comments)
 const Comments = ({ isQuestion, question }) => {
     const [newComment, setNewComment] = useState("");
@@ -12,6 +45,7 @@ const Comments = ({ isQuestion, question }) => {
     const [currentQuestion, setCurrentQuestion] = useState(question);  // use it to retrieve new object from db
     const { username } = useAuth();
     const [userId, setUserId] = useState(null);
+    const [commentsPage, setCommentsPage] = useState(0);
 
     useEffect(() => {
         const fetchUserId = async () => {
@@ -43,12 +77,35 @@ const Comments = ({ isQuestion, question }) => {
         fetchUserId();
         fetchComments();
     }, [question.comments, refreshComments]);
+
+    const handleLeft = () => {
+        let pageMin = 0;
+        if (commentsPage > pageMin) {
+            setCommentsPage(commentsPage - 1);
+        }
+    };
+    
+    const handleRight = () => {
+        let pageMax = Math.floor((fullComments.length - 1) / 3);
+        if (commentsPage < pageMax) {
+            setCommentsPage(commentsPage + 1);
+        }
+    };
+    
+    const switchCommentPageBtn = () => {
+        return (
+            <div className="comment-switch-container">
+                <button className="comment-switch-left" onClick={handleLeft}>Prev</button>
+                <span className="comment-page">{commentsPage}</span>
+                <button className="comments-switch-right" onClick={handleRight}>Next</button>
+            </div>
+        );
+    };
     
     const updateQuestion = async () => {
         try {
             let response;
             if(isQuestion){
-                console.log("querying question");
                 response = await axios.get(`http://localhost:8000/api/question/${question._id}`);
             }else {
                 console.log("here is the question " + question);
@@ -122,22 +179,34 @@ const Comments = ({ isQuestion, question }) => {
         )
    }
 
+   /*
+   * render3Comments: renders the 3 most recent comments 
+   */
+   const render3Comments = (page) => {
+    const commentsPerPage = 3;
+    const startIndex = page * commentsPerPage;
+    const endIndex = startIndex + commentsPerPage;
+    const commentsToRender = fullComments.slice(startIndex, endIndex);
+    return (
+        <div className="comment-display">
+            {commentsToRender.map((comment, index) => (
+                renderComment(comment, index)
+            ))}
+        </div>
+    );
+};
+
+
     return (
         <div className="question-comments">
+            {switchCommentPageBtn()}
             <div className="comments-inner">
-                <div className="comment-display">
-                    {fullComments.map((comment, index) => (
-                        renderComment(comment, index)
-                    ))}
-                </div>
-                <div className="new-commentField">
-                    <input type="text"
-                            className="new-comment"
-                            placeholder="Add a comment"
-                            onChange={newCommentChange}
-                            value={newComment}
-                            onKeyDown={newCommentEnter} />
-                </div>
+                {render3Comments(commentsPage)}
+                <CommentInputField 
+                    isQuestion={isQuestion} 
+                    question={question} 
+                    updateQuestion={updateQuestion} 
+                />
             </div>
         </div>
     );

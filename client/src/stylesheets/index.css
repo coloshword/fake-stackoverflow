@@ -395,6 +395,11 @@ input[type="text"] {
 /* comments */
 .question-comments {
   border-top: solid 1px #d8dbdd;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* align items*/
+  
 }
 
 .comments-inner {
@@ -660,6 +665,11 @@ label {
 
 .iconArrowUp {
   background-color: #3b4044;
+}
+
+
+.comment-switch-container {
+  margin-top: 2%;
 }
 /* card from boostrap */
 .card {

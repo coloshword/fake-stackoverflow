@@ -116,8 +116,8 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
                 }
 
                 return (
-                    <div class="card">
-                        <div class="card-body bordered">
+                    <div className="card" key={aid}> 
+                        <div className="card-body bordered">
                             <div className="answer-comment-wrapper">
                                     <div className="answer-vote-container" key={aid}>
                                         <div className="answer-text-vote-wrapper">
