@@ -505,6 +505,49 @@ input[type="text"] {
   padding: 15px 0;
 }
 
+.comment-page {
+  margin-top: 2px;
+}
+
+.comment-switch-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+}
+
+.comment-switch-left, .comment-switch-right {
+  all: unset;
+  cursor: pointer;
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  border: 1px #3b4044 solid;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.comment-switch-left {
+  background-image: url('../../assets/arrow-left.svg');
+}
+
+.comment-switch-right {
+  background-image: url('../../assets/arrow-right.svg');
+}
+
+.comment-switch-left:hover, .comment-switch-right:hover {
+  border: 1px solid #e76f0f; 
+  background-color: #fbdbc1; 
+}
+
+.disabled-button {
+  cursor: not-allowed; 
+  opacity: 0.6;
+  background-color: #ccc; 
+  color: #666; 
+  border: 1px solid #999; 
+}
+
 .answer-text-vote-wrapper {
   display: flex;
   flex-direction: row;

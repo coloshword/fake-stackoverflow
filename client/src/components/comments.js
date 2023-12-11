@@ -39,7 +39,6 @@ const CommentInputField = ({ isQuestion, question, updateQuestion }) => {
 
 //IMPORTANT: question, can be a question , or an answer (since both question and answer have comments)
 const Comments = ({ isQuestion, question }) => {
-    const [newComment, setNewComment] = useState("");
     const [fullComments, setFullComments] = useState([]);
     const [refreshComments, setRefreshComments] = useState(false); 
     const [currentQuestion, setCurrentQuestion] = useState(question);  // use it to retrieve new object from db
@@ -95,9 +94,9 @@ const Comments = ({ isQuestion, question }) => {
     const switchCommentPageBtn = () => {
         return (
             <div className="comment-switch-container">
-                <button className="comment-switch-left" onClick={handleLeft}>Prev</button>
+                <button className="comment-switch-left" onClick={handleLeft}></button>
                 <span className="comment-page">{commentsPage}</span>
-                <button className="comments-switch-right" onClick={handleRight}>Next</button>
+                <button className="comment-switch-right" onClick={handleRight}></button>
             </div>
         );
     };
@@ -119,23 +118,6 @@ const Comments = ({ isQuestion, question }) => {
         }
     };
 
-    const newCommentChange = (e) => {
-        setNewComment(e.target.value);
-    }
-
-    const newCommentEnter = async (e) => {
-        if (e.key === "Enter" && newComment !== "") {
-            const commentObj = { isQuestion: isQuestion,question: question._id, comment_by: username,newComment }; 
-            try {
-                const response = await axios.post('http://localhost:8000/api/add_comment', commentObj);
-                console.log(response.data);
-                setNewComment("");
-                updateQuestion();
-            } catch (error) {
-                console.error('Error posting comment: ', error);
-            }
-        }
-    }
 
     /*
     * handleUpVote: handles upvoting a comment by adding the user's id to the comment's upvote array
