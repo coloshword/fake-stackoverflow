@@ -92,11 +92,21 @@ const Comments = ({ isQuestion, question }) => {
     };
     
     const switchCommentPageBtn = () => {
+        let pageMin = 0;
+        let pageMax = Math.floor((fullComments.length - 1) / 3);
         return (
             <div className="comment-switch-container">
-                <button className="comment-switch-left" onClick={handleLeft}></button>
+                <button 
+                    className={`comment-switch-left ${commentsPage === pageMin ? 'disabled-button' : ''}`}
+                    onClick={handleLeft}
+                    disabled={commentsPage === pageMin}>
+                </button>
                 <span className="comment-page">{commentsPage}</span>
-                <button className="comment-switch-right" onClick={handleRight}></button>
+                <button 
+                    className={`comment-switch-right ${commentsPage === pageMax ? 'disabled-button' : ''}`}
+                    onClick={handleRight}
+                    disabled={commentsPage === pageMax}>
+                </button>
             </div>
         );
     };
