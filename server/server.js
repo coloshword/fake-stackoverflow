@@ -221,19 +221,17 @@ app.post('/api/questions', async (req, res) =>{
 app.put('/api/questions/:questionId', async (req, res) => {
     try {
         const { questionId } = req.params;
-        const { answers } = req.body;
+        const { newAnswerId } = req.body; 
 
-        // Find the question by ID
         const question = await Question.findById(questionId);
 
         if (!question) {
             return res.status(404).send('Question not found');
         }
 
-        // Update the question fields
-        if (answers) question.answers = answers;
-
-        // Save the updated question
+        if (newAnswerId && !question.answers.includes(newAnswerId)) {
+            question.answers.push(newAnswerId);
+        }
         await question.save();
 
         res.status(200).json(question);
@@ -242,6 +240,7 @@ app.put('/api/questions/:questionId', async (req, res) => {
         res.status(500).send('Error updating the question');
     }
 });
+
 
 app.patch('/api/questions/:questionId', async (req, res) => {
     const { questionId } = req.params;

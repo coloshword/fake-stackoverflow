@@ -94,6 +94,10 @@ const Comments = ({ isQuestion, question }) => {
     const switchCommentPageBtn = () => {
         let pageMin = 0;
         let pageMax = Math.floor((fullComments.length - 1) / 3);
+        if(pageMax < 0) {
+            pageMax = 0;
+        }
+        console.log("PAGE MAX " + pageMax)
         return (
             <div className="comment-switch-container">
                 <button 

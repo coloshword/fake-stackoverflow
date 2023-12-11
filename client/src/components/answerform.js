@@ -19,23 +19,14 @@ const AnswerForm = ({ question, onAnswerPosted }) => {
       const postResponse = await axios.post('http://localhost:8000/api/answers', answerData);
       console.log("Answer posted to backend:", postResponse.data);
 
-      // Reset form fields after successful submission
       setAnswerUsername("");
       setAnswerText("");
+      const newAnswer = postResponse.data._id;
 
-      // Add the new answer ID to the question's answers array
-      const updatedAnswers = [...question.answers, postResponse.data._id];
-      console.log("Updated answers array:", updatedAnswers);
-
-      // Update the question object with the new answers array
-      const updatedQuestion = { ...question, answers: updatedAnswers };
-
-      // Make a PUT request to update the question
-      const putResponse = await axios.put(`http://localhost:8000/api/questions/${question._id}`, { answers: updatedAnswers });
+      const putResponse = await axios.put(`http://localhost:8000/api/questions/${question._id}`, { newAnswerId: newAnswer });
       console.log('Update successful:', putResponse.data);
 
-      // Call the onAnswerPosted callback
-      onAnswerPosted(updatedQuestion);
+      onAnswerPosted(putResponse.data);
 
   } catch (error) {
       console.error('Error updating resource:', error);
