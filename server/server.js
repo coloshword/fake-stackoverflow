@@ -660,6 +660,7 @@ app.post('/api/users/register', async (req, res) => {
         // Check if username already exists
         const existingUserByUsername = await User.findOne({ username: req.body.username });
         if (existingUserByUsername) {
+            console.log("existing username");
             return res.status(400).send('Username already exists');
         }
 
@@ -678,13 +679,11 @@ app.post('/api/users/register', async (req, res) => {
             username: req.body.username,
             password: hashedPassword,
             email: req.body.email,
-            // Set default or initial values for other fields
             reputation: 90, // Assuming a default reputation value
             questions: [],
             tags: [],
             answers: [],
             user_date_time: ans_date_time
-            // Add any other fields as necessary
         });
 
         // Save new user
