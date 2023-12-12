@@ -86,7 +86,6 @@ const VoteInterface = ({questOrAns, isQuestion}) => {
                 throw new Error('Server responded without data.');
             }
             if (response.status === 403) {
-                // Handle the specific case where user has less than required reputation
                 setMessage(response.data.message || "You don't have enough reputation to vote");
                 setMessageType(1);
                 setShowMessage(true);
