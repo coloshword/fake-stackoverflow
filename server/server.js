@@ -804,6 +804,10 @@ app.patch('/api/voting/:questOrAnsId', async (req, res) => {
         if (!voterUser) {
             return res.status(404).json({ message: "Voter user not found" });
         }
+        // first check user if they have enough reputation
+        if (voterUser.reputation < 50) {
+            return res.status(403).json({ message: 'You need at least 50 reputation to vote!' });
+        }
         const voterId = voterUser._id;
         if (isUpvote) {
             const index = questOrAns.upvoters.indexOf(voterId);

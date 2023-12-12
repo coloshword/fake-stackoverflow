@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from "react";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
+import { Message } from './message';
 
 // every voting interface has an associated question or Ans, and userId (to change reputation)
 const VoteInterface = ({questOrAns, isQuestion}) => {
@@ -8,6 +9,9 @@ const VoteInterface = ({questOrAns, isQuestion}) => {
     const {username} = useAuth();
     const [currentQuestAns, setCurrentQuestAns] = useState(questOrAns);
     const [userId, setUserId] = useState(null);
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState(0); 
+    const [showMessage, setShowMessage] = useState(false);
     useEffect(() => {
         const fetchUserId = async () => {
             try {
@@ -77,15 +81,31 @@ const VoteInterface = ({questOrAns, isQuestion}) => {
         }
         try {
             const response = await axios.patch(`http://localhost:8000/api/voting/${questOrAns._id}`, requestBody);
+            
+            if (!response.data) {
+                throw new Error('Server responded without data.');
+            }
+            if (response.status === 403) {
+                // Handle the specific case where user has less than required reputation
+                setMessage(response.data.message || "You don't have enough reputation to vote");
+                setMessageType(1);
+                setShowMessage(true);
+                return;
+            }
+    
             setCurrentQuestAns(response.data);
             setRefreshVotes(!refreshVotes);
-        }
-        catch(err) {
-            console.log("Could not handleUpvote");
+        } catch (err) {
+            // Handle other errors
+            setMessage(err.response?.data?.message || err.message);
+            setMessageType(1);
+            setShowMessage(true);
+            console.log("Error in voting:", err);
         }
     };
     return(
         <div className="vote-interface-container">
+            {showMessage && <Message message={message} messageType={messageType} onHide={() => setShowMessage(false)} />}
             {renderUpvote()}
             <span className="vote-interface-num"> {currentQuestAns.upvoters.length - currentQuestAns.downvoters.length} </span>
             {renderDownVote()}
