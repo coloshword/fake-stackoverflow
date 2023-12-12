@@ -146,6 +146,8 @@ function DisplayAllQuestions({ selectedTag, setSelectedQuestionId, searchText })
         }
         setQuestions(response.data instanceof Array ? response.data : [response.data]);
         console.log("Questions state should be updated");
+        const tagsResponse = await axios.get('http://localhost:8000/api/tags');
+        setTags(tagsResponse.data);
     } catch (error) {
             console.error('Error fetching questions: ', error);
         }
@@ -302,6 +304,7 @@ function DisplayAllQuestions({ selectedTag, setSelectedQuestionId, searchText })
                 filteredQuestions.map(question => {
                     console.log("Rendering question:", question);
                     const tagMatch = getTagMatch(question);
+                    console.log(tagMatch);
                     return (
                         <div
                         className="question"
@@ -318,7 +321,7 @@ function DisplayAllQuestions({ selectedTag, setSelectedQuestionId, searchText })
                             <h2>{question.title}</h2>
                             <div className="tags">
                                 {tagMatch.map(tag => (
-                                <span key={tag} className="tag">{tag}</span>
+                                    <span key={tag} className="tag">{tag}</span>
                                 ))}
                             </div>
                             </div>

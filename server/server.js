@@ -287,6 +287,8 @@ app.post('/api/questions', async (req, res) =>{
             newTagIds.push(tag._id);
         }
 
+        console.log(newTagIds);
+
         const newQuestion = new Question({
             title: title,
             text: details,
@@ -550,7 +552,7 @@ app.delete('/api/questions/:questionId', async (req, res) => {
         }
 
         const userId = question._id; // Assuming 'askedBy' holds the ID of the user who asked the question
-
+        
         // Remove the question ID from the user's questions array
         await User.findByIdAndUpdate(userId, { $pull: { questions: questionId } });
 
