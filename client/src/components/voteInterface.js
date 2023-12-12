@@ -70,15 +70,17 @@ const VoteInterface = ({questOrAns, isQuestion}) => {
     }
 
     const handleVote = async (isUpvote) => {
-        if(username == null) {
+        if (username == null) {
             alert("You must be logged in to vote");
+            return;
         }
-        // add the userId of the current user to the database
+    
         const requestBody = {
             isQuestion: isQuestion,
             isUpvote: isUpvote,
             voterUsername: username,
-        }
+        };
+    
         try {
             const response = await axios.patch(`http://localhost:8000/api/voting/${questOrAns._id}`, requestBody);
             
@@ -92,6 +94,10 @@ const VoteInterface = ({questOrAns, isQuestion}) => {
                 return;
             }
     
+            // Update reputation
+            await updateReputation(isUpvote, isQuestion ? questOrAns.ques_by : questOrAns.ans_by);
+
+    
             setCurrentQuestAns(response.data);
             setRefreshVotes(!refreshVotes);
         } catch (err) {
@@ -102,6 +108,16 @@ const VoteInterface = ({questOrAns, isQuestion}) => {
             console.log("Error in voting:", err);
         }
     };
+
+    const updateReputation = async (isUpvote, quest_by) => {
+        const reputationChange = isUpvote ? 5 : -10;
+        try {
+            await axios.patch(`http://localhost:8000/api/users/${quest_by}/reputation`, { reputationChange });
+        } catch (error) {
+            console.log("Error updating reputation:", error);
+        }
+    };
+
     return(
         <div className="vote-interface-container">
             {showMessage && <Message message={message} messageType={messageType} onHide={() => setShowMessage(false)} />}
