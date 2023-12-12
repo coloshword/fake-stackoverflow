@@ -2,7 +2,11 @@
 Add design docs in *images/*
 
 ## Instructions to setup and run project
-
-## Team Member 1 Contribution
-
-## Team Member 2 Contribution
+ 
+## Team Member 1 Contribution: Aneesh Surasani
+ - wrote server end code and init.js file to setup backend
+ - Created login, logout, and create account
+ - created Profile Screen
+ - Created Guest limitations
+ - minor bug fixes
+## Team Member 2 Contribution: Acero Liang
