@@ -4,6 +4,8 @@ import Comments from './comments';
 import axios from 'axios';
 import { timeAgo } from "../helpers/timeago";
 import { VoteInterface } from "./voteInterface"
+import { useAuth } from './AuthContext';
+
 
 const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
     console.log('DisplayAnswers component called');
@@ -13,6 +15,7 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
     const [updatedQuestion, setQuestion] = useState(question);
     const [isLoading, setIsLoading] = useState(true);
     const [answerPage, setAnswerPage] = useState(0);
+    const { username } = useAuth();
 
 
     console.log('Before useEffect');
@@ -195,9 +198,9 @@ const DisplayAnswers = ({ question, onBack, updateAnswers}) => {
                 {renderAnswers(answerPage)}
             </div>
             {/* "Answer Question" button */}
-            <div className="answer-question basic-margin">
+            {username && (<div className="answer-question basic-margin">
                 <button className="ask-questions-button" onClick={() => setShowAnswerForm(true)}>Answer Question</button>
-            </div>
+            </div>)}
         </div>
     );
 }

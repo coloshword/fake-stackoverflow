@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAuth } from './AuthContext';
 
 function TagsComponent({ onAskQuestionClick, onTagClick }) {
     const [uniqueTags, setUniqueTags] = useState([]);
     const [questions, setQuestions] = useState([]);
+    const { username } = useAuth();
 
     useEffect(() => {
         // Create a function to fetch tags
@@ -75,13 +77,15 @@ function TagsComponent({ onAskQuestionClick, onTagClick }) {
                     <div className="all-tags-sign">
                         All Tags
                     </div>
-                    <button 
-                        className="ask-questions-button" 
-                        id="askTagQuestionButton" 
-                        onClick={onAskQuestionClick}
-                    >
-                        Ask Question
-                    </button>
+                    {username && (
+                        <button 
+                            className="ask-questions-button" 
+                            id="askTagQuestionButton" 
+                            onClick={onAskQuestionClick}
+                        >
+                            Ask Question
+                        </button>
+                    )}
                 </div>
             </div>
             <div className="tags-page">

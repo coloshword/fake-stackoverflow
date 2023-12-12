@@ -198,11 +198,12 @@ const Comments = ({ isQuestion, question }) => {
             {switchCommentPageBtn()}
             <div className="comments-inner">
                 {render3Comments(commentsPage)}
-                <CommentInputField 
+                {username && (<CommentInputField 
                     isQuestion={isQuestion} 
                     question={question} 
                     updateQuestion={updateQuestion} 
                 />
+                )}
             </div>
         </div>
     );

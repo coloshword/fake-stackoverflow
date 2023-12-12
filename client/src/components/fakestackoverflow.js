@@ -22,6 +22,10 @@ const FakeStackOverflow = () => {
         hideHomeScreen(); // This method already exists in your component
         setLoggedInUser(username);
     };
+    
+    const showHomeScreenn = () => {
+        setShowHomeScreen(true);
+    };
 
     const hideHomeScreen = () => {
         setShowHomeScreen(false);
@@ -89,6 +93,7 @@ const FakeStackOverflow = () => {
                         showQuestionsForTag={showQuestionsForTag} 
                         setSelectedTab={setSelectedTab}
                         model={modelData}
+                        onBackToHome={showHomeScreenn}
                         setModelData={setModelData} 
                         handleTabChange={handleTabChange}
                     />

@@ -2,12 +2,15 @@ import React from 'react';
 import { useAuth } from './AuthContext'; // Import useAuth hook
 
 
-const Sidebar = ({ selectedTab, setSelectedTab, handleTabChange }) => {
-    const { logOut } = useAuth();
-    const handleLogout = () => {
-        logOut();
-        // Clear user authentication data
-        console.log("Logged out");
+const Sidebar = ({ selectedTab, handleTabChange, onBackToHome }) => {
+    const { logOut, username } = useAuth();
+    const handleLogoutOrHome = () => {
+        if (username) {
+            logOut();
+            console.log("Logged out");
+        } else {
+            onBackToHome(); // Call the passed callback function for guests
+        }
     }
 
 
@@ -28,21 +31,35 @@ const Sidebar = ({ selectedTab, setSelectedTab, handleTabChange }) => {
                 >
                     Tags
                 </button>
-                <button 
-                    className={`transparent-button ${selectedTab === 'profile' ? 'selected' : ''}`}
-                    id="tagsButton"
-                    onClick={() => handleTabChange('profile')}
-                >
-                    Profile
-                </button>
-                <button 
-                className="transparent-button"
-                id="logoutButton"
-                onClick={handleLogout}
-                style={{ alignSelf: 'center', margin: '20px 0' }} // Centers the button in the flex container
-                >
-                    <i className="fas fa-sign-out-alt"></i> Logout
-                </button>
+                {username && (
+                    <button 
+                        className={`transparent-button ${selectedTab === 'profile' ? 'selected' : ''}`}
+                        id="profileButton"
+                        onClick={() => handleTabChange('profile')}
+                    >
+                        Profile
+                    </button>
+                )}
+
+                {username ? (
+                    <button 
+                        className="transparent-button"
+                        id="logoutButton"
+                        onClick={handleLogoutOrHome}
+                        style={{ alignSelf: 'center', margin: '20px 0' }}
+                    >
+                        <i className="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                ) : (
+                    <button 
+                        className="transparent-button"
+                        id="backHomeButton"
+                        onClick={handleLogoutOrHome}
+                        style={{ alignSelf: 'center', margin: '20px 0' }}
+                    >
+                        <i className="fas fa-home"></i> Back to Home
+                    </button>
+                )}
             </div>
         </div>
     );

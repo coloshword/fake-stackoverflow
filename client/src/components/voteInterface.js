@@ -40,10 +40,14 @@ const VoteInterface = ({questOrAns, isQuestion}) => {
         if(currentQuestAns.upvoters.includes(userId)) {
             btnClass = "vote-interface-upvoted";
         }
-        return(
-            <button className = {btnClass}  onClick={() => handleVote(true)}>
-            </button>
-        )
+        if (username) {
+            return (
+                <button className={btnClass} onClick={() => handleVote(true)}>
+                </button>
+            );
+        } else {
+            return null;
+        }
     }
 
     const renderDownVote = () => {
@@ -51,10 +55,14 @@ const VoteInterface = ({questOrAns, isQuestion}) => {
         if(currentQuestAns.downvoters.includes(userId)) {
             btnClass = "vote-interface-downvoted";
         }
-        return(
-            <button className={btnClass} onClick={() => handleVote(false)}>
-            </button>
-        )
+        if (username) {
+            return (
+                <button className={btnClass} onClick={() => handleVote(false)}>
+                </button>
+            );
+        } else {
+            return null;
+        }
     }
 
     const handleVote = async (isUpvote) => {
