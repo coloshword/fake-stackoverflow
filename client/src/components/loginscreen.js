@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
+import { Message } from './message'; 
 
 const LoginScreen = ({ onLoginSuccess, onCreateAccount }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState(0); // 0 for success, 1 for error
+    const [showMessage, setShowMessage] = useState(false);
     const { logIn } = useAuth();
 
     const handleUsernameChange = (e) => {
@@ -24,25 +28,39 @@ const LoginScreen = ({ onLoginSuccess, onCreateAccount }) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
             });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                setMessage(errorText);
+                setMessageType(1); 
+                setShowMessage(true);
+                return; 
+            }
+
             const data = await response.json();
             if (data.user) {
                 localStorage.setItem('user', JSON.stringify(data.user));
-                console.log('Logged in as ' + data.user.username);
                 logIn(data.user.username); // Call logIn with the user data
                 onLoginSuccess(data.user.username, false); // false indicates regular user
-            } else if (data.users) { // Specific response structure for admin login
-                // Handle admin login
-                console.log('Admin logged in', data);
-                onLoginSuccess(username, true); // true indicates admin
+                setMessage('Logged in successfully');
+                setMessageType(0); // Success message type
+            } else if (data.users) { 
+                onLoginSuccess(username, true); 
+                setMessage('Admin logged in successfully');
+                setMessageType(0); 
             }
         } catch (error) {
+            setMessage('Login error: ' + error.message);
+            setMessageType(1); 
             console.error('Login error', error);
         }
+        setShowMessage(true);
     };
 
     return (
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
             <h2>Login</h2>
+            {showMessage && <Message message={message} messageType={messageType} onHide={() => setShowMessage(false)} />}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>

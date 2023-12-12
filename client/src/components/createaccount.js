@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import styles from '../stylesheets/CreateAccount.module.css';
+import { Message } from './message';
 
 const CreateAccount = ({ onAccountCreationAndLogin }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [verifyPassword, setVerifyPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [message, setMessage] = useState(''); 
+    const [messageType, setMessageType] = useState(0); 
+    const [showMessage, setShowMessage] = useState(false); 
 
     const loginAfterAccountCreation = async () => {
         try {
@@ -29,14 +33,20 @@ const CreateAccount = ({ onAccountCreationAndLogin }) => {
         }
     };
 
+    const hideMessage = () => {
+        setShowMessage(false);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Validate the inputs
-        if (password !== verifyPassword) {
-            console.error('Passwords do not match');
-            return; // Stop the function if the passwords don't match
-        }
         // Email validation can be added here if needed
+        if (password !== verifyPassword) {
+            setMessage('Passwords do not match');
+            setMessageType(1); 
+            setShowMessage(true);
+            return;
+        }
 
         try {
             const response = await fetch('http://localhost:8000/api/users/register', {
@@ -50,17 +60,32 @@ const CreateAccount = ({ onAccountCreationAndLogin }) => {
                 console.log("Account creation successful:", data.message);
                 await loginAfterAccountCreation(); // Automatically log in after account creation
             } else {
-                // Handle server-side errors (e.g., username already exists)
-                console.error('Account creation failed:', data.message || 'Unknown error');
+                setMessage(data.message || 'Account creation failed');
+                setMessageType(1); 
+                setShowMessage(true);
             }
         } catch (error) {
-            console.error('Account creation error', error);
+            const regex = /"([^"]+)"/;
+            console.log(error.message);
+            const matches = regex.exec(error.message);
+            if (matches && matches[1]) {
+                setMessage(matches[1]);
+                if(matches[1].includes('Username')) {
+                    setMessage("Username already exists");
+                }
+            } else {
+                setMessage('Account creation error');
+            }
+            
+            setMessageType(1); 
+            setShowMessage(true);
         }
     };
 
     return (
         <div className={styles.createAccountContainer}>
             <h2 className={styles.formTitle}>Create Account</h2>
+            {showMessage && <Message message={message} messageType={messageType} onHide={hideMessage} />}
             <form onSubmit={handleSubmit} className={styles.accountForm}>
                 <div className={styles.formGroup}>
                     <label htmlFor="username" className={styles.formLabel}>Username:</label>

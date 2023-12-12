@@ -23,8 +23,6 @@ function EditQuestionForm({ question, onQuestionUpdated, refreshQuestions }) {
             id,
             title,
             text
-            // tags: tags.split(/\s+/), // Split tags by whitespace into an array
-            // askedBy: username
         };
         console.log(questionData)
 
