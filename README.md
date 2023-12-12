@@ -22,3 +22,8 @@ Start client --> "npm start"
  - Created Guest limitations
  - minor bug fixes
 ## Team Member 2 Contribution: Acero Liang
+-voting system for questions and answers
+- voting for comments
+- comments 
+- displaying 5 answers per page and moving page functionality
+- display error component
