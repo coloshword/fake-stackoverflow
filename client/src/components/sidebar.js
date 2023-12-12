@@ -29,13 +29,20 @@ const Sidebar = ({ selectedTab, setSelectedTab, handleTabChange }) => {
                     Tags
                 </button>
                 <button 
+                    className={`transparent-button ${selectedTab === 'profile' ? 'selected' : ''}`}
+                    id="tagsButton"
+                    onClick={() => handleTabChange('profile')}
+                >
+                    Profile
+                </button>
+                <button 
                 className="transparent-button"
                 id="logoutButton"
                 onClick={handleLogout}
                 style={{ alignSelf: 'center', margin: '20px 0' }} // Centers the button in the flex container
-            >
-                <i className="fas fa-sign-out-alt"></i> Logout
-            </button>
+                >
+                    <i className="fas fa-sign-out-alt"></i> Logout
+                </button>
             </div>
         </div>
     );

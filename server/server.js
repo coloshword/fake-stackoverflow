@@ -73,6 +73,94 @@ app.get('/api/user/:username', async (req, res) => {
     }
 });
 
+// Endpoint to get questions by a specific user
+app.get('/api/questions/user/:username', async (req, res) => {
+    try {
+        // Fetch the user's ID based on the username
+        // This requires that you have a unique username for each user and a User model
+        const username = req.params.username;
+        const user = await fetchUserByUsername(username);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Fetch all questions by the user's ID
+        const questions = await Question.find({ ques_by: user._id });
+
+        res.json(questions);
+    } catch (error) {
+        console.error('Error fetching questions by user:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+// Endpoint to get questions by a specific user
+app.get('/api/answers/user/:username', async (req, res) => {
+    try {
+        // Fetch the user's ID based on the username
+        // This requires that you have a unique username for each user and a User model
+        const username = req.params.username;
+        const user = await fetchUserByUsername(username);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Fetch all questions by the user's ID
+        const answers = await Answer.find({ ans_by: user._id });
+
+        res.json(answers);
+    } catch (error) {
+        console.error('Error fetching questions by user:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+// Endpoint to get questions by a specific user
+app.get('/api/tags/user/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await User.findOne({ username: username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Assuming 'tags' is an array of tag IDs in the User model
+        const userTags = user.tags;
+        if (!userTags || userTags.length === 0) {
+            return res.status(200).json([]); // No tags found for the user
+        }
+
+        // Fetch the tag documents for each tag ID in the user's tags array
+        const tags = await Tag.find({ '_id': { $in: userTags }});
+
+        res.json(tags);
+    } catch (error) {
+        console.error('Error fetching tags by user:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+app.patch('/api/questions/:questionId', async (req, res) => {
+    const { questionId } = req.params;
+
+    try {
+        const updatedQuestion = await Question.findByIdAndUpdate(
+            questionId,
+            req.body,
+            { new: true } // Return the updated document instead of the original
+        );
+
+        if (!updatedQuestion) {
+            return res.status(404).send('Question not found');
+        }
+
+        res.status(200).json(updatedQuestion);
+    } catch (error) {
+        console.error('Error updating question:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 
 // Example route for fetching questions
 app.get('/api/questions', async (req, res) => {
@@ -92,7 +180,6 @@ app.get('/api/questions', async (req, res) => {
                 questions[i].ques_by = 'Unknown';
             }
         }
-        console.log(questions);
         res.json(questions);
     } catch (err) {
         console.error(err);
@@ -150,6 +237,8 @@ app.post('/api/answers', async (req, res) => {
         });
 
         // Saving the answer to the database
+        user.answers.push(newAnswer._id);
+        await user.save();
         await newAnswer.save();
 
         // Sending success response
@@ -180,7 +269,6 @@ app.post('/api/questions', async (req, res) =>{
     try{
         const { title, details, tags, askedBy } = req.body; // Include 'tags' in destructuring
         const user = await fetchUserByUsername(askedBy);
-        console.log(user);
 
         // Validate that tags is an array, if necessary
         if (!Array.isArray(tags)) {
@@ -193,6 +281,7 @@ app.post('/api/questions', async (req, res) =>{
             let tag = await Tag.findOne({ name: new RegExp(`^${tagName}$`, 'i') });
             if (!tag) {
                 tag = new Tag({ name: tagName });
+                user.tags.push(tag._id);
                 await tag.save();
             }
             newTagIds.push(tag._id);
@@ -207,6 +296,9 @@ app.post('/api/questions', async (req, res) =>{
             answers: [],
             views: 0
         });
+
+        user.questions.push(newQuestion._id);
+        await user.save();
 
         await newQuestion.save();
         res.status(201).json(newQuestion);
@@ -241,24 +333,132 @@ app.put('/api/questions/:questionId', async (req, res) => {
     }
 });
 
-
-app.patch('/api/questions/:questionId', async (req, res) => {
-    const { questionId } = req.params;
+app.patch('/api/questions/edit/:questionId', async (req, res) => {
     try {
-        const question = await Question.findById(questionId);
-        if (!question) {
+        const { questionId } = req.params;
+        // Find the question and update it
+        const updatedQuestion = await Question.findByIdAndUpdate(
+            questionId,
+            {
+                $set: req.body // Set the fields in req.body
+            },
+            { new: true } // Return the modified document rather than the original
+        );
+
+        if (!updatedQuestion) {
             return res.status(404).send('Question not found');
         }
 
-        question.views += 1; // Increment the view count
-        await question.save();
-
-        res.status(200).json(question);
+        res.status(200).json(updatedQuestion);
     } catch (err) {
         console.error(err);
         res.status(500).send('Error updating the question');
     }
 });
+
+app.patch('/api/answers/edit/:answerId', async (req, res) => {
+    try {
+        const { answerId } = req.params;
+        // Find the question and update it
+        const updatedAnswer = await Answer.findByIdAndUpdate(
+            answerId,
+            {
+                $set: req.body // Set the fields in req.body
+            },
+            { new: true } // Return the modified document rather than the original
+        );
+
+        if (!updatedAnswer) {
+            return res.status(404).send('Question not found');
+        }
+
+        res.status(200).json(updatedAnswer);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error updating the question');
+    }
+});
+
+app.patch('/api/tags/edit/:tagId', async (req, res) => {
+    try {
+        const { tagId } = req.params;
+        const { username } = req.body;
+        const user = await fetchUserByUsername(username);
+
+         // Fetch the user ID based on the username
+         if (!user) {
+             return res.status(404).send('User not found');
+         }
+        const userId = user._id; // Assuming the user's ID is available in the request
+
+        // Check if the tag is used in questions not authored by the current user
+        const isTagUsedElsewhere = await Question.exists({
+            tags: tagId,
+            ques_by: { $ne: userId }
+        });
+
+        if (isTagUsedElsewhere) {
+            return res.status(403).send('Tag is used in other questions and cannot be edited');
+        }
+
+        // Update the tag if it's only used in questions by the current user
+        const updatedTag = await Tag.findByIdAndUpdate(
+            tagId,
+            {
+                $set: req.body // Set the fields in req.body
+            },
+            { new: true } // Return the modified document rather than the original
+        );
+
+        if (!updatedTag) {
+            return res.status(404).send('Tag not found');
+        }
+
+        res.status(200).json(updatedTag);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error updating the tag');
+    }
+});
+
+app.delete('/api/tags/:tagId', async (req, res) => {
+    try {
+        const { tagId } = req.params;
+        const { username } = req.body; // Assuming username is sent in the request body
+        const user = await fetchUserByUsername(username);
+
+        // Fetch the user ID based on the username
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        const userId = user._id;
+
+        // Check if the tag is used in questions not authored by the current user
+        const isTagUsedElsewhere = await Question.exists({
+            tags: tagId,
+            ques_by: { $ne: userId } // Checking for questions with a different author
+        });
+
+        if (isTagUsedElsewhere) {
+            return res.status(403).send('Tag is used in questions by other authors and cannot be deleted');
+        }
+
+        // Delete the tag if it's only used in questions by the current user
+        const deletedTag = await Tag.findByIdAndDelete(tagId);
+
+        if (!deletedTag) {
+            return res.status(404).send('Tag not found');
+        }
+
+        res.status(200).send('Tag successfully deleted');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error deleting the tag');
+    }
+});
+
+
+
 
 /* get question given question id */
 app.get('/api/question/:questionId', async (req, res) => {
@@ -323,6 +523,12 @@ app.delete('/api/admin/users/:userId', async (req, res) => {
         // If tags are solely owned by a user, delete them as well
         // await Tag.deleteMany({ createdBy: userId });
 
+        // Remove the user from the users array of any Admin document that references them
+        await Admin.updateMany(
+            { users: userId },
+            { $pull: { users: userId } }
+        );
+
         // Finally, delete the user
         await User.deleteOne({ _id: userId });
 
@@ -332,6 +538,69 @@ app.delete('/api/admin/users/:userId', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+app.delete('/api/questions/:questionId', async (req, res) => {
+    const { questionId } = req.params;
+
+    try {
+        // Find the question to get the user who asked it
+        const question = await Question.findById(questionId);
+        if (!question) {
+            return res.status(404).json({ message: 'Question not found' });
+        }
+
+        const userId = question._id; // Assuming 'askedBy' holds the ID of the user who asked the question
+
+        // Remove the question ID from the user's questions array
+        await User.findByIdAndUpdate(userId, { $pull: { questions: questionId } });
+
+        // Delete the question
+        await Question.findByIdAndDelete(questionId);
+
+        res.status(200).json({ message: 'Question successfully deleted' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error deleting the question' });
+    }
+});
+
+app.delete('/api/answers/:answerId', async (req, res) => {
+    const { answerId } = req.params;
+
+    try {
+        // Find the question to get the user who asked it
+        const answer = await Answer.findById(answerId);
+        if (!answer) {
+            return res.status(404).json({ message: 'Question not found' });
+        }
+
+        const userId = answer.ans_by; // Assuming 'ans_by' holds the ID of the user who answered
+
+        // Find the question that contains this answer and remove the answer ID from its answers array
+        const question = await Question.findOneAndUpdate(
+            { answers: answerId },
+            { $pull: { answers: answerId } },
+            { new: true }
+        );
+
+        if (!question) {
+            return res.status(404).json({ message: 'Question not found' });
+        }
+
+        // Remove the question ID from the user's answers array
+        await User.findByIdAndUpdate(userId, { $pull: { answers: answerId } });
+
+        // Delete the answer
+        await Answer.findByIdAndDelete(answerId);
+        
+
+        res.status(200).json({ message: 'Answer successfully deleted' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error deleting the question' });
+    }
+});
+
 
 
 
@@ -362,7 +631,6 @@ app.post('/api/admin/login', async (req, res) => {
 app.post('/api/users/login', async (req, res) => {
     try {
         const user = await User.findOne({ username: req.body.username });
-        console.log(user);
         if (!user) {
             return res.status(401).send('Invalid credentials');
         }
@@ -436,7 +704,6 @@ app.post('/api/users/register', async (req, res) => {
 
 app.post('/api/add_comment', async (req, res) => {
     try {
-        console.log(req.body);
         const { isQuestion, question, comment_by, newComment } = req.body;
         const comment = new Comment({
             text: newComment,

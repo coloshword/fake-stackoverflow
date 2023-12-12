@@ -18,7 +18,8 @@ const CreateAccount = ({ onAccountCreationAndLogin }) => {
 
             if (loginResponse.ok) {
                 console.log("Logged in successfully");
-                onAccountCreationAndLogin(loginData); // Call the onLogin prop function to handle post-login UI update
+                console.log(loginData.username);
+                onAccountCreationAndLogin(loginData.user.username); // Call the onLogin prop function to handle post-login UI update
             } else {
                 // Handle login failure here
                 console.error('Login failed after account creation:', loginData.message || 'Unknown error');

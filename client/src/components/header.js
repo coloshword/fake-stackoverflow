@@ -17,7 +17,7 @@ const Header = ({ onSearchInputChange }) => {
     return (
         <div id="header" className="outlined-margin">
             <div className="title">
-                <h1>Fake Stack Overflow</h1>
+                <h1>Fake StackOverflow</h1>
             </div>
             <div className="search-bar">
                 <input 

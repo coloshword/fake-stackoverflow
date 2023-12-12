@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import DisplayAllQuestions from './questions';
 import DisplayAllTags from './tags';
 import AskQuestionForm from './AskQuestionForm';
+import Profile from './Profile';
 
 
 const Content = ({
@@ -41,6 +42,10 @@ const Content = ({
                         <DisplayAllTags
                             onTagClick={onTagClick}
                         />
+                    );
+                case 'profile':
+                    return (
+                        <Profile />
                     );
                 default:
                     return null;
