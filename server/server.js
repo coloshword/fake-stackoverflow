@@ -842,6 +842,27 @@ app.patch('/api/voting/:questOrAnsId', async (req, res) => {
     }
 });
 
+app.patch('/api/users/:userId/reputation', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const { reputationChange } = req.body;
+        console.log(reputationChange);
+
+        const user = await fetchUserByUsername(userId)
+        console.log(user);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        user.reputation += reputationChange;
+        await user.save();
+        res.status(200).json({ message: 'Reputation updated successfully', newReputation: user.reputation });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Reputation not changed');
+    }
+});
+
+
 
 
 
